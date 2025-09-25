@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Basket - imacx Shop</title>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <style>
+    body {
+      font-family: 'Cursive', sans-serif;
+      background: #fff;
+      color: goldenrod;
+      padding: 1rem;
+    }
+    h2 { color: goldenrod; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    th, td {
+      border: 1px solid goldenrod;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    img { border-radius: 5px; }
+    input, textarea, button {
+      font-family: 'Cursive', sans-serif;
+      padding: 0.5rem;
+      border: 1px solid goldenrod;
+      margin: 0.3rem 0;
+    }
+    button {
+      background: goldenrod;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #searchBox {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid goldenrod;
+    }
+  </style>
+</head>
+<body>
+  <h2>🛒 Basket</h2>
+  <input type="text" id="searchBox" placeholder="Search basket...">
+  <div id="basket-table"></div>
+
+  <h2>Shipping Details</h2>
+  <form id="shippingForm">
+    <label>Recipient Name: <input type="text" id="recipient" required></label><br>
+    <label>Email: <input type="email" id="email" required></label><br>
+    <label>Country Code: <input type="text" id="countryCode" required></label>
+    <label>Phone: <input type="text" id="phone" required></label><br>
+    <label>Address: <textarea id="address" required></textarea></label><br>
+    <label>Area: <input type="text" id="area" required></label>
+    <label>City: <input type="text" id="city" required></label><br>
+    <label>State: <input type="text" id="state" required></label>
+    <label>Country: <input type="text" id="country" required></label>
+    <label>Zip: <input type="text" id="zip" required></label><br>
+
+    <button type="submit">💳 Pay Now</button>
+  </form>
+
+  <script>
+    // GunDB setup
+    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+    const globalOrders = gun.get('imacx_orders');
+
+    let total = 0;
+
+    // Basket helpers
+    function getBasket() {
+      return JSON.parse(localStorage.getItem('basket')) || [];
+    }
+
+    function saveBasket(basket) {
+      localStorage.setItem('basket', JSON.stringify(basket));
+    }
+
+    function renderBasket(filtered = null) {
+      const basket = filtered || getBasket();
+      if (basket.length === 0) {
+        document.getElementById('basket-table').innerHTML = '<p>No items in basket.</p>';
+        return;
+      }
+
+      total = 0;
+      let html = `<table>
+        <tr>
+          <th>Image</th><th>Name</th><th>Qty</th><th>Price</th>
+          <th>Total</th><th>Category</th><th>Subcategory</th><th>Action</th>
+        </tr>`;
+
+      basket.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        html += `<tr>
+          <td><img src="${item.image}" width="60"></td>
+          <td>${item.name}</td>
+          <td>
+            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)">
+          </td>
+          <td>₹${item.price}</td>
+          <td>₹${itemTotal}</td>
+          <td>${item.category || '-'}</td>
+          <td>${item.subcategory || '-'}</td>
+          <td><button onclick="deleteItem(${index})">Delete</button></td>
+        </tr>`;
+      });
+
+      html += `<tr><td colspan="4"><strong>Grand Total</strong></td><td colspan="4"><strong>₹${total}</strong></td></tr></table>`;
+      document.getElementById('basket-table').innerHTML = html;
+    }
+
+    function updateQuantity(index, qty) {
+      const basket = getBasket();
+      basket[index].quantity = parseInt(qty, 10) || 1;
+      saveBasket(basket);
+      renderBasket();
+    }
+
+    function deleteItem(index) {
+      const basket = getBasket();
+      basket.splice(index, 1);
+      saveBasket(basket);
+      renderBasket();
+    }
+
+    // Payment flow directly on form submit
+    document.getElementById("shippingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const basket = getBasket();
+      if (!basket.length) return alert("Basket empty.");
+
+      const shipping = {
+        recipient: document.getElementById('recipient').value,
+        email: document.getElementById('email').value,
+        countryCode: document.getElementById('countryCode').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        area: document.getElementById('area').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        country: document.getElementById('country').value,
+        zip: document.getElementById('zip').value
+      };
+
+      total = basket.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const orderId = 'IMX' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+      const newOrder = {
+        orderId,
+        basket,
+        shipping,
+        total,
+        status: "Pending Payment",
+        timestamp: Date.now()
+      };
+
+      // Save to GunDB + local
+      try {
+        globalOrders.get(orderId).put(newOrder);
+        globalOrders.set(newOrder);
+      } catch (e) {
+        console.error("GunDB error:", e);
+      }
+
+      const localOrders = JSON.parse(localStorage.getItem('admin_orders')) || [];
+      localOrders.push(newOrder);
+      localStorage.setItem('admin_orders', JSON.stringify(localOrders));
+
+      // Razorpay
+      const options = {
+        key: "rzp_test_xxxxx", // Replace with your Razorpay key
+        amount: Math.round(total * 100),
+        currency: "INR",
+        name: "imacx Shop",
+        description: `Order ID: ${orderId}`,
+        notes: { orderId, ...shipping },
+        handler: function (response) {
+          alert("✅ Payment successful: " + response.razorpay_payment_id);
+
+          globalOrders.get(orderId).get('status').put('Payment Done');
+
+          localStorage.setItem('orderData', JSON.stringify({
+            ...newOrder,
+            status: 'Payment Done',
+            razorpay_payment_id: response.razorpay_payment_id
+          }));
+
+          localStorage.removeItem('basket');
+          window.location.href = "thankyou.html";
+        },
+        prefill: {
+          name: shipping.recipient,
+          email: shipping.email,
+          contact: shipping.countryCode + shipping.phone
+        },
+        theme: { color: "#bfa046" }
+      };
+
+      new Razorpay(options).open();
+    });
+
+    // Search basket
+    document.getElementById('searchBox').addEventListener('input', e => {
+      const query = e.target.value.trim();
+      const basket = getBasket();
+      if (!query) return renderBasket(basket);
+
+      const fuse = new Fuse(basket, { keys: ['name', 'category', 'subcategory'], threshold: 0.3 });
+      const results = fuse.search(query).map(r => r.item);
+      renderBasket(results);
+    });
+
+    // Init
+    renderBasket();
+  </script>
+</body>
+</html>
