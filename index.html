@@ -7,136 +7,125 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --accent:#9ed9bb; /* taken from your anchor in link */
-    --dark:#0f1414;
-    --muted:#6b6b6b;
-    --card:#ffffff;
-    --bg:#faf9f7;
-    --max-width:1200px;
-  }
-  *{box-sizing:border-box}
-  body{font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased}
-  a{color:var(--accent); text-decoration:none}
-  .container{max-width:var(--max-width); margin:0 auto; padding:0 20px}
-
-  /* Header */
-  header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:30; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04)}
-  .topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:48px; width:48px; object-fit:contain}
-  .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
-  nav{display:flex; gap:18px; align-items:center}
-  nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark)}
-  nav a.primary{background:var(--accent); color:#083; padding:10px 14px; border-radius:24px; color:#fff; font-weight:700}
-
-  /* Override for hero to always show full content */
-.hero {
-  position: relative !important;
-  overflow: visible !important;
-  margin-top: 0 !important;
+:root{
+  --accent:#9ed9bb;
+  --dark:#0f1414;
+  --muted:#6b6b6b;
+  --card:#ffffff;
+  --bg:#faf9f7;
+  --max-width:1200px;
 }
-.hero .slides {
-  display: flex !important;
-  width: calc(100% * 3) !important;
-  transition: transform 0.8s ease !important;
+*{box-sizing:border-box;}
+body{font-family:"Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased;}
+a{color:var(--accent); text-decoration:none;}
+.container{max-width:var(--max-width); margin:0 auto; padding:0 20px;}
+
+/* Header */
+header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:30; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04);}
+.topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand img{height:48px; width:48px; object-fit:contain;}
+.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px;}
+nav{display:flex; gap:18px; align-items:center;}
+nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark);}
+nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; color:#fff; font-weight:700;}
+
+/* Hero */
+.hero{
+  position: relative;
+  overflow: visible;
+  background:#faf9f7;
+  padding:40px 0;
 }
-.hero .slide {
-  flex: 0 0 100% !important;
-  min-height: 100vh !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 20px !important;
-  box-sizing: border-box !important;
-  overflow: visible !important;
+.hero .slides{
+  display:flex;
+  transition: transform 0.8s ease;
 }
-.hero .slide .overlay {
-  width: 100% !important;
-  max-width: 1200px !important;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+.hero .slide{
+  flex:0 0 100%;
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 0;
 }
-.hero .left {
-  flex: 1 1 auto !important;
-  min-width: 280px !important;
-  padding: 0 12px !important;
+.hero .overlay{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  max-width:1200px;
 }
-.hero .right {
-  flex: 1 1 auto !important;
-  min-width: 200px !important;
-  padding: 0 12px !important;
+.hero .left{flex:1 1 auto; min-width:280px; padding:0 12px;}
+.hero .left h2{font-size:38px; font-weight:700; margin-bottom:12px;}
+.hero .left p{font-size:16px; color:var(--muted); margin-bottom:12px;}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
+.btn{padding:12px 20px; border-radius:8px; font-weight:600; cursor:pointer; border:none; transition:all .3s ease;}
+.btn.primary{background:var(--accent); color:#fff;}
+.btn.ghost{background:transparent; border:2px solid var(--accent); color:var(--accent);}
+.btn:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.hero .right{flex:1 1 auto; min-width:200px; padding:0 12px;}
+.hero-image{max-width:100%; height:auto; object-fit:contain; border-radius:12px; box-shadow:0 8px 30px rgba(16,16,16,0.12);}
+.dots{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); display:flex; gap:6px; z-index:20;}
+.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.2); cursor:pointer; transition:all .25s ease;}
+.dot.active{background:var(--accent);}
+
+/* Sections */
+.section{padding:48px 0;}
+.section h3{font-size:28px; margin-bottom:16px; font-family:"Playfair Display";}
+.grid{display:grid; gap:20px;}
+.features{grid-template-columns:repeat(3,1fr);}
+.card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; gap:10px; transition:all .3s ease;}
+.card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08);}
+.card h4{margin:0; font-size:20px; font-weight:700;}
+.card p{margin:0; color:var(--muted); font-size:15px;}
+
+/* Product grid */
+.products-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px;}
+.product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; justify-content:space-between; transition:all .3s ease;}
+.product:hover{transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.08);}
+.product img{width:100%; height:160px; object-fit:cover;}
+.product .meta{padding:12px;}
+.product .meta h5{margin:0 0 6px; font-size:17px; font-weight:600;}
+.product .meta p{margin:0; color:var(--muted); font-size:14px;}
+
+/* Welcome section */
+.welcome{display:flex; gap:40px; align-items:flex-start;}
+.welcome .text{flex:1;}
+.welcome .side{width:320px; background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 20px rgba(12,12,12,0.04);}
+.welcome h3{font-size:26px; margin-bottom:12px;}
+
+/* Contact section */
+.contact{display:flex; gap:40px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;}
+.contact h4{margin-bottom:6px;}
+.vip{display:flex; gap:8px; align-items:center;}
+.vip input[type="email"]{padding:12px; border-radius:8px; border:1px solid #e6e6e6; min-width:220px;}
+.vip button{padding:12px 14px; border-radius:8px; border:0; background:var(--dark); color:#fff; cursor:pointer;}
+
+/* Footer & Cookie */
+footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04);}
+.cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+.cookie p{margin:0; color:var(--muted);}
+.cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700; cursor:pointer;}
+
+/* Reveal animations */
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+.reveal.show{opacity:1; transform:translateY(0);}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero .overlay{flex-direction:column;}
+  .hero .right{display:none;}
+  .features{grid-template-columns:1fr;}
+  .welcome{flex-direction:column;}
+  nav{display:none;}
+  .topbar{padding:0 14px;}
+  .brand h1{font-size:18px;}
 }
-.hero-image {
-  max-width: 100% !important;
-  height: auto !important;
-  object-fit: contain !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 30px rgba(16,16,16,0.12) !important;
+@media(max-width:600px){
+  .products-grid{grid-template-columns:1fr !important;}
 }
-.dots {
-  position: absolute !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  bottom: 20px !important;
-  z-index: 20 !important;
-}
-
-
-
-
-  /* Explore section */
-  .section{padding:48px 0}
-  .section h3{font-size:28px; margin:0 0 10px; font-family:"Playfair Display"}
-  .grid{display:grid; gap:20px}
-  .features{grid-template-columns:repeat(3,1fr); align-items:stretch}
-  .card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); min-height:150px; display:flex; flex-direction:column; gap:10px; transform:translateY(0); transition:transform .45s ease, box-shadow .25s}
-  .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08)}
-  .card h4{margin:0; font-size:18px}
-  .card p{margin:0; color:var(--muted)}
-
-  /* Featured products grid */
-  .products-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-  .product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04)}
-  .product img{width:100%; height:160px; object-fit:cover; display:block}
-  .product .meta{padding:12px}
-  .product .meta h5{margin:0 0 6px; font-size:16px}
-  .product .meta p{margin:0; color:var(--muted); font-size:14px}
-
-  /* Welcome + site content */
-  .welcome{display:flex; gap:28px; align-items:flex-start}
-  .welcome .text{flex:1}
-  .welcome .side{width:320px; background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 20px rgba(12,12,12,0.04)}
-
-  /* Contact */
-  .contact{display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-  .vip{display:flex; gap:8px; align-items:center}
-  .vip input[type="email"]{padding:12px; border-radius:8px; border:1px solid #e6e6e6; min-width:220px}
-  .vip button{padding:12px 14px; border-radius:8px; border:0; background:var(--dark); color:#fff}
-
-  /* footer & cookie */
-  footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)}
-  .cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px}
-  .cookie p{margin:0; color:var(--muted)}
-  .cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700}
-
-  /* responsive */
-  @media (max-width:900px){
-    .hero .overlay{flex-direction:column}
-    .hero .left{max-width:100%}
-    .hero .right{display:none}
-    .features{grid-template-columns:1fr}
-    .welcome{flex-direction:column}
-    nav{display:none}
-    .topbar{padding:0 14px}
-    .brand h1{font-size:18px}
-  }
-
-  /* simple fade reveal */
-  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
-  .reveal.show{opacity:1; transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -144,7 +133,6 @@
 <header>
   <div class="topbar container">
     <div class="brand">
-      <!-- logo from the GoDaddy demo (small icon used) -->
       <img src="https://img1.wsimg.com/isteam/ip/0f396d5e-e6a9-49d8-98cc-996f063b2f98/icon.png" alt="Imacx logo">
       <div>
         <h1>Imacx</h1>
@@ -160,25 +148,24 @@
   </div>
 </header>
 
-  <section class="hero">
+<section class="hero">
   <div class="slides" id="slides">
     <div class="slide">
       <div class="overlay container">
         <div class="left">
           <h2>Shop Unique Home Decor Online</h2>
-          <p>Shop Unique Home Decor Online Shop Unique Home Decor Online Shop Unique Home Decor Online</p>
           <p>Transform your space with our exclusive designs and quality products.</p>
           <div class="cta-row">
             <button class="btn primary" onclick="scrollToSection('#featured')">Explore Our Collection</button>
             <button class="btn ghost" onclick="openSignup()">Join Our VIP List</button>
           </div>
-        </div>
-        <div class="right">
-          <img class="hero-image" src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="Decor sample">
-        </div>
+      </div>
+      <div class="right">
+        <img class="hero-image" src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="Decor sample">
       </div>
     </div>
-    <!-- Other slides similarly -->
+    </div>
+    <!-- Additional slides can be duplicated here following same structure -->
   </div>
   <div class="dots" id="dots"></div>
 </section>
@@ -208,14 +195,13 @@
   </div>
 </section>
 
-<!-- Featured products -->
+<!-- Featured Products -->
 <section id="featured" class="section container">
   <div class="reveal">
     <h3>Featured Products</h3>
     <div style="height:12px"></div>
     <p style="color:var(--muted)">Explore our stunning collection of delights</p>
-    <div class="grid products-grid" style="grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px">
-      <!-- product tiles (placeholder images) -->
+    <div class="grid products-grid">
       <div class="product">
         <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop" alt="product 1">
         <div class="meta">
@@ -223,7 +209,6 @@
           <p>Luxury, handcrafted — perfect statement piece.</p>
         </div>
       </div>
-
       <div class="product">
         <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop" alt="product 2">
         <div class="meta">
@@ -231,7 +216,6 @@
           <p>Comfort meets style — 3 meter giant pillow available.</p>
         </div>
       </div>
-
       <div class="product">
         <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="product 3">
         <div class="meta">
@@ -239,7 +223,6 @@
           <p>Sumptuous and cozy, a unique lounge experience.</p>
         </div>
       </div>
-
       <div class="product">
         <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop" alt="product 4">
         <div class="meta">
@@ -247,7 +230,6 @@
           <p>Large decorative wall piece using pearls and wire.</p>
         </div>
       </div>
-
       <div class="product">
         <img src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="product 5">
         <div class="meta">
@@ -255,7 +237,6 @@
           <p>Signature confections — perfect gift idea.</p>
         </div>
       </div>
-
       <div class="product">
         <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop" alt="product 6">
         <div class="meta">
@@ -267,12 +248,12 @@
   </div>
 </section>
 
-<!-- Welcome + Site content -->
+<!-- Welcome Section -->
 <section class="section container">
   <div class="welcome reveal">
     <div class="text">
       <h3>Welcome</h3>
-      <p>There's much to see here. So, take your time, look around, and learn all there is to know about us. We hope you enjoy our site and take a moment to drop us a line.</p>
+      <p>There's much to see here. Take your time, look around, and learn all there is to know about us. We hope you enjoy our site and take a moment to drop us a line.</p>
       <div style="margin-top:18px">
         <a class="btn primary" href="#contact">Find out more</a>
       </div>
@@ -292,7 +273,7 @@
   </div>
 </section>
 
-<!-- Contact / VIP -->
+<!-- Contact / VIP Section -->
 <section id="contact" class="section container">
   <div class="reveal">
     <h3>Contact Us</h3>
@@ -304,7 +285,6 @@
         <p style="margin-top:12px"><strong>Imacx</strong><br>8452939172</p>
         <p><strong>Hours</strong><br>Open today<br>09:00 am – 05:00 pm</p>
       </div>
-
       <div style="min-width:260px">
         <h4>Join Our VIP List</h4>
         <p style="color:var(--muted)">Email</p>
@@ -318,6 +298,7 @@
   </div>
 </section>
 
+<!-- Footer -->
 <footer class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
     <div style="font-weight:600">Copyright © 2025 Imacx - All Rights Reserved.</div>
@@ -325,7 +306,7 @@
   </div>
 </footer>
 
-<!-- Cookie consent -->
+<!-- Cookie Consent -->
 <div class="cookie" id="cookieBar" role="dialog" aria-live="polite">
   <p>We use cookies to analyze website traffic and optimize your website experience. By accepting our use of cookies, your data will be aggregated with all other user data.</p>
   <div style="display:flex; gap:8px; align-items:center">
@@ -333,7 +314,7 @@
   </div>
 </div>
 
-<!-- Signup modal (simple) -->
+<!-- Signup Modal -->
 <div id="signupModal" style="position:fixed; left:0; top:0; right:0; bottom:0; display:none; align-items:center; justify-content:center; z-index:80; background:rgba(0,0,0,0.45)">
   <div style="background:#fff; padding:20px; border-radius:10px; width:92%; max-width:520px; box-shadow:0 30px 80px rgba(0,0,0,0.3)">
     <h3 style="margin-top:0">Join Our VIP List</h3>
@@ -343,13 +324,13 @@
       <button class="btn primary" onclick="submitModal()">Sign up</button>
     </div>
     <div style="text-align:right; margin-top:12px">
-      <button onclick="closeSignup()" style="background:none; border:0; color:var(--muted)">Close</button>
+      <button onclick="closeSignup()" style="background:none; border:0; color:var(--muted); cursor:pointer;">Close</button>
     </div>
   </div>
 </div>
 
 <script>
-  // slideshow logic (auto + dots)
+  // Slide Show
   const slides = document.getElementById('slides');
   const dotsWrap = document.getElementById('dots');
   const slideCount = slides.children.length;
@@ -365,69 +346,66 @@
     dotsWrap.children[0].classList.add('active');
   }
   function refreshDots(){
-    Array.from(dotsWrap.children).forEach((el, i)=>{
-      el.classList.toggle('active', i===index);
-    });
+    Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===index));
   }
   function goTo(i){
-    index = i;
-    slides.style.transform = `translateX(-${index*100}%)`;
+    index=i;
+    slides.style.transform=`translateX(-${index*100}%)`;
     refreshDots();
   }
   createDots();
-  let slideTimer = setInterval(()=>{
-    index = (index + 1) % slideCount;
+
+  // Auto Slide every 6s
+  setInterval(()=>{
+    index = (index+1) % slideCount;
     goTo(index);
-  },5000);
+  },6000);
 
-  // pause on hover
-  document.querySelector('.hero').addEventListener('mouseenter', ()=>clearInterval(slideTimer));
-  document.querySelector('.hero').addEventListener('mouseleave', ()=>slideTimer = setInterval(()=>{
-    index = (index + 1) % slideCount; goTo(index);
-  },5000));
-
-  // reveal on scroll
-  function revealOnScroll(){
-    document.querySelectorAll('.reveal').forEach(el=>{
-      const rect = el.getBoundingClientRect();
-      if(rect.top < window.innerHeight - 80){
-        el.classList.add('show');
-      }
-    });
+  // Scroll to section
+  function scrollToSection(sel){
+    const el = document.querySelector(sel);
+    if(el) el.scrollIntoView({behavior:'smooth'});
   }
-  window.addEventListener('scroll', revealOnScroll);
-  window.addEventListener('load', revealOnScroll);
 
-  // simple VIP signup handlers
+  // VIP Form
   function submitVIP(){
-    const e = document.getElementById('vipEmail'); const msg = document.getElementById('vipMsg');
-    if(!e.value || !e.value.includes('@')){ alert('Please enter a valid email'); return;}
-    e.value=''; msg.style.display='block';
-    setTimeout(()=>msg.style.display='none',3000);
+    const email = document.getElementById('vipEmail').value;
+    if(email){ 
+      document.getElementById('vipMsg').style.display='block';
+      document.getElementById('vipEmail').value='';
+    }
   }
+
+  // Modal
   function openSignup(){ document.getElementById('signupModal').style.display='flex'; }
   function closeSignup(){ document.getElementById('signupModal').style.display='none'; }
   function submitModal(){
-    const e = document.getElementById('modalEmail');
-    if(!e.value || !e.value.includes('@')){ alert('Please enter a valid email'); return;}
-    alert('Thanks — you have been added to the VIP list!');
-    e.value=''; closeSignup();
-  }
-  function scrollToSection(sel){
-    const el = document.querySelector(sel);
-    if(!el) return;
-    el.scrollIntoView({behavior:'smooth', block:'start'});
+    const email = document.getElementById('modalEmail').value;
+    if(email){
+      alert("Thanks for signing up!");
+      document.getElementById('modalEmail').value='';
+      closeSignup();
+    }
   }
 
-  // cookie accept
+  // Cookie Consent
   function acceptCookies(){
-    localStorage.setItem('imacx_cookie', '1');
+    document.getElementById('cookieBar').style.display='none';
+    localStorage.setItem('cookiesAccepted','true');
+  }
+  if(localStorage.getItem('cookiesAccepted')==='true'){
     document.getElementById('cookieBar').style.display='none';
   }
-  if(localStorage.getItem('imacx_cookie')) document.getElementById('cookieBar').style.display='none';
 
-  // small accessibility: close modal on Escape
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeSignup(); }});
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  window.addEventListener('scroll',()=>{
+    const trigger = window.innerHeight*0.85;
+    reveals.forEach(el=>{
+      const top = el.getBoundingClientRect().top;
+      if(top < trigger) el.classList.add('show');
+    });
+  });
 </script>
 
 </body>
