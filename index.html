@@ -1,402 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>imacx Shop</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
-  <style>
-    body {margin:0; font-family:'Cursive',sans-serif; background:#fff; color:goldenrod;}
-    .navbar {background:white; padding:1rem; border-bottom:1px solid goldenrod; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000;}
-    .navbar img {height:40px;}
-    .nav-links a {margin-left:1rem; text-decoration:none; color:goldenrod;}
-    .menu-links {display:none; flex-direction:column; gap:0.5rem; margin-top:1rem;}
-    .search-sort-filter {display:flex; justify-content:space-between; flex-wrap:wrap; padding:1rem;}
-    .search-sort-filter input, .search-sort-filter select {margin:0.5rem; padding:0.5rem; font-family:'Cursive',sans-serif;}
-    .products-container {display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:1rem; padding:1rem;}
-    .product-card {border:1px solid goldenrod; border-radius:10px; padding:0.5rem; text-align:center; font-size:0.8rem;}
-    .product-card img {width:100%; height:100px; object-fit:cover; border-radius:5px; cursor:pointer;}
-    .quantity-controls {display:flex; justify-content:center; align-items:center; margin:0.5rem 0;}
-    .quantity-controls button {padding:0.3rem; background:goldenrod; color:white; border:none; cursor:pointer;}
-    .quantity-controls input {width:30px; text-align:center; font-size:0.8rem;}
-    .add-to-basket-btn {background-color:goldenrod; color:white; border:none; padding:0.3rem 0.5rem; cursor:pointer; font-family:'Cursive',sans-serif; font-size:0.8rem; border-radius:4px;}
-    footer {padding:1rem; text-align:center; border-top:1px solid goldenrod; margin-top:2rem; font-size:0.9rem;}
-    /* Popup carousel */
-    #productPopup {display:none; position:fixed; inset:0; background-color:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;}
-    #productPopup .popup-content {background:white; color:black; padding:1rem; border-radius:8px; max-width:500px; width:90%; position:relative; font-family:'Cursive',sans-serif;}
-    #productPopup .carousel {position:relative; overflow:hidden; border-radius:6px; margin-bottom:1rem;}
-    #productPopup .carousel img {width:100%; transition:transform 0.3s ease;}
-    #productPopup .carousel button {position:absolute; top:50%; transform:translateY(-50%); background:none; border:none; font-size:24px; color:goldenrod; cursor:pointer;}
-    #productPopup .carousel .prev {left:0;}
-    #productPopup .carousel .next {right:0;}
- 
-  .imacx-advertisement {
-  background: #fff8e1;
-  border: 2px solid goldenrod;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-  text-align: center;
-  font-family: 'Cursive', sans-serif;
-}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Imacx — Shop Unique Home Decor Online</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#9ed9bb; /* taken from your anchor in link */
+    --dark:#0f1414;
+    --muted:#6b6b6b;
+    --card:#ffffff;
+    --bg:#faf9f7;
+    --max-width:1200px;
+  }
+  *{box-sizing:border-box}
+  body{font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased}
+  a{color:var(--accent); text-decoration:none}
+  .container{max-width:var(--max-width); margin:0 auto; padding:0 20px}
 
-.imacx-advertisement .ad-content h2 {
-  color: goldenrod;
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-}
+  /* Header */
+  header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:30; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04)}
+  .topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:48px; width:48px; object-fit:contain}
+  .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
+  nav{display:flex; gap:18px; align-items:center}
+  nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark)}
+  nav a.primary{background:var(--accent); color:#083; padding:10px 14px; border-radius:24px; color:#fff; font-weight:700}
 
-.imacx-advertisement .ad-content p {
-  color: #333;
-  margin-bottom: 1rem;
-}
+  /* HERO */
+  .hero{position:relative; overflow:hidden; margin-top:14px}
+  .hero .slides{display:flex; width:300%; transition:transform 0.8s cubic-bezier(.2,.9,.3,1)}
+  .hero .slide{flex:0 0 100%; min-height:420px; display:flex; align-items:center; justify-content:center; position:relative; padding:48px 20px}
+  .hero .slide .overlay{max-width:1200px; display:flex; gap:40px; align-items:center; justify-content:space-between; width:100%}
+  .hero .left{max-width:54%; color:var(--dark)}
+  .hero h2{font-family:"Playfair Display"; font-size:42px; margin:0 0 12px; line-height:1.05; color:#111}
+  .hero p{margin:0 0 22px; color:var(--muted); font-size:18px}
+  .cta-row{display:flex; gap:14px}
+  .btn{display:inline-block; padding:12px 18px; border-radius:8px; font-weight:700; cursor:pointer; border:0}
+  .btn.primary{background:var(--accent); color:#fff}
+  .btn.ghost{background:transparent; border:2px solid rgba(16,16,16,0.06)}
+  .hero .right{flex:0 0 40%; display:flex; align-items:center; justify-content:center}
+  .hero .hero-image{width:90%; border-radius:12px; box-shadow: 0 8px 30px rgba(16,16,16,0.12);}
 
-.imacx-advertisement .ad-content button {
-  background: goldenrod;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 6px;
-  font-family: 'Cursive', sans-serif;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
-}
+  /* slideshow controls */
+  .dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px}
+  .dot{width:10px; height:10px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer}
+  .dot.active{background:var(--accent)}
 
-.imacx-advertisement .ad-content button:hover {
-  background: #bfa046;
-}
+  /* Explore section */
+  .section{padding:48px 0}
+  .section h3{font-size:28px; margin:0 0 10px; font-family:"Playfair Display"}
+  .grid{display:grid; gap:20px}
+  .features{grid-template-columns:repeat(3,1fr); align-items:stretch}
+  .card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); min-height:150px; display:flex; flex-direction:column; gap:10px; transform:translateY(0); transition:transform .45s ease, box-shadow .25s}
+  .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08)}
+  .card h4{margin:0; font-size:18px}
+  .card p{margin:0; color:var(--muted)}
 
-.imacx-advertisement .ad-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
+  /* Featured products grid */
+  .products-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04)}
+  .product img{width:100%; height:160px; object-fit:cover; display:block}
+  .product .meta{padding:12px}
+  .product .meta h5{margin:0 0 6px; font-size:16px}
+  .product .meta p{margin:0; color:var(--muted); font-size:14px}
 
-.imacx-advertisement .ad-images img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid goldenrod;
-  transition: transform 0.3s ease;
-}
+  /* Welcome + site content */
+  .welcome{display:flex; gap:28px; align-items:flex-start}
+  .welcome .text{flex:1}
+  .welcome .side{width:320px; background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 20px rgba(12,12,12,0.04)}
 
-.imacx-advertisement .ad-images img:hover {
-  transform: scale(1.05);
-}
-  </style>
+  /* Contact */
+  .contact{display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+  .vip{display:flex; gap:8px; align-items:center}
+  .vip input[type="email"]{padding:12px; border-radius:8px; border:1px solid #e6e6e6; min-width:220px}
+  .vip button{padding:12px 14px; border-radius:8px; border:0; background:var(--dark); color:#fff}
+
+  /* footer & cookie */
+  footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)}
+  .cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px}
+  .cookie p{margin:0; color:var(--muted)}
+  .cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700}
+
+  /* responsive */
+  @media (max-width:900px){
+    .hero .overlay{flex-direction:column}
+    .hero .left{max-width:100%}
+    .hero .right{display:none}
+    .features{grid-template-columns:1fr}
+    .welcome{flex-direction:column}
+    nav{display:none}
+    .topbar{padding:0 14px}
+    .brand h1{font-size:18px}
+  }
+
+  /* simple fade reveal */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
+  .reveal.show{opacity:1; transform:translateY(0)}
+</style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <img src="logo.png" alt="imacx logo">
-    <div class="nav-links">
-      <a href="basketone.html">Basket</a>
-      <a href="shop.html">shop</a>
-      <a href="track-order.html">Track Order</a>
-      <a href="#" onclick="toggleMenu()">Menu</a>
+
+<header>
+  <div class="topbar container">
+    <div class="brand">
+      <!-- logo from the GoDaddy demo (small icon used) -->
+      <img src="https://img1.wsimg.com/isteam/ip/0f396d5e-e6a9-49d8-98cc-996f063b2f98/icon.png" alt="Imacx logo">
+      <div>
+        <h1>Imacx</h1>
+        <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
+      </div>
     </div>
-  </nav>
-  <div class="menu-links" id="menu">
-    <a href="about.html">About</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms & Conditions</a>
-    <a href="contact.html">Contact Us</a>
-    <a href="faq.html">FAQ</a>
+    <nav aria-label="Main navigation">
+      <a href="#explore">Explore Imacx Now</a>
+      <a href="#featured">Featured Products</a>
+      <a href="#contact">Contact</a>
+      <a href="#vip" class="primary">Join VIP</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO with slideshow -->
+<section class="hero">
+  <div class="slides" id="slides">
+    <!-- slide 1 (main content matches demo copy) -->
+    <div class="slide" style="background:linear-gradient(120deg, rgba(255,255,255,0.6), rgba(250,250,250,0.6));">
+      <div class="overlay container">
+        <div class="left">
+          <h2>Shop Unique Home Decor Online</h2>
+          <p>Shop Unique Home Decor Online Shop Unique Home Decor Online Shop Unique Home Decor Online</p>
+          <p>Transform your space with our exclusive designs and quality products.</p>
+          <div class="cta-row">
+            <button class="btn primary" onclick="scrollToSection('#featured')">Explore Our Collection</button>
+            <button class="btn ghost" onclick="openSignup()">Join Our VIP List</button>
+          </div>
+        </div>
+        <div class="right">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="Decor sample">
+        </div>
+      </div>
+    </div>
+
+    <!-- slide 2 -->
+    <div class="slide" style="background:linear-gradient(180deg,#fff,#fbfcfb)">
+      <div class="overlay container">
+        <div class="left">
+          <h2>Shop Unique Home Decor Online</h2>
+          <p>Discover designer pieces and carefully curated items to elevate every corner of your home.</p>
+          <div class="cta-row">
+            <button class="btn primary" onclick="scrollToSection('#featured')">Explore Our Collection</button>
+            <button class="btn ghost" onclick="openSignup()">Track Order</button>
+          </div>
+        </div>
+        <div class="right">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="Decor sample 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- slide 3 -->
+    <div class="slide" style="background:linear-gradient(180deg,#fff,#f7f7f7)">
+      <div class="overlay container">
+        <div class="left">
+          <h2>Explore Imacx Now</h2>
+          <p>At Imacx, we believe in turning dreams into reality. Our vision is to create innovative products that enhance everyday life.</p>
+          <div style="margin-top:12px">
+            <a href="#vision" class="btn primary">Discover Our Vision</a>
+            <a href="#contact" class="btn ghost">Contact Us</a>
+          </div>
+        </div>
+        <div class="right">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=1200&auto=format&fit=crop" alt="Decor sample 3">
+        </div>
+      </div>
+    </div>
   </div>
 
- <!-- Advertisement Section -->
-<div class="imacx-advertisement">
-  <div class="ad-content">
-    <h2>Discover iMacx – Luxury Redefined</h2>
-    <p>Experience the ultimate in skincare, fashion, and lifestyle products designed to elevate your everyday elegance.</p>
-    <button onclick="window.location.href='shop.html'">Explore iMacx</button>
+  <div class="dots" id="dots"></div>
+</section>
+
+<!-- Explore / Features -->
+<section id="explore" class="section container">
+  <div class="reveal">
+    <h3>Explore Imacx Now</h3>
+    <div style="height:8px"></div>
+    <div class="grid features">
+      <div class="card">
+        <h4>Our Vision</h4>
+        <p>At Imacx, we believe in turning dreams into reality. Our vision is to create innovative products that enhance everyday life.</p>
+        <a href="#vision">Discover Our Vision</a>
+      </div>
+      <div class="card">
+        <h4>Fast Delivery</h4>
+        <p>We understand the importance of timely delivery. At Imacx, we work with reliable shipping partners to ensure your orders arrive quickly and safely.</p>
+        <a href="#track">Track Order</a>
+      </div>
+      <div class="card">
+        <h4>Premium Quality</h4>
+        <p>Discover our hand-selected collection that balances craft, comfort and longevity — curated for a sophisticated aesthetic.</p>
+        <a href="#featured">Explore Collection</a>
+      </div>
+    </div>
   </div>
-  <div class="ad-images">
-    <img src="https://example.com/img1.jpg" alt="iMacx 1">
-    <img src="https://example.com/img2.jpg" alt="iMacx 2">
-    <img src="https://example.com/img3.jpg" alt="iMacx 3">
-    <img src="https://example.com/img4.jpg" alt="iMacx 4">
-    <img src="https://example.com/img5.jpg" alt="iMacx 5">
-    <img src="https://example.com/img6.jpg" alt="iMacx 6">
-    <img src="https://example.com/img7.jpg" alt="iMacx 7">
+</section>
+
+<!-- Featured products -->
+<section id="featured" class="section container">
+  <div class="reveal">
+    <h3>Featured Products</h3>
+    <div style="height:12px"></div>
+    <p style="color:var(--muted)">Explore our stunning collection of delights</p>
+    <div class="grid products-grid" style="grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px">
+      <!-- product tiles (placeholder images) -->
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop" alt="product 1">
+        <div class="meta">
+          <h5>Imacx Iconic Chair</h5>
+          <p>Luxury, handcrafted — perfect statement piece.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop" alt="product 2">
+        <div class="meta">
+          <h5>Silk Comfort Pillow</h5>
+          <p>Comfort meets style — 3 meter giant pillow available.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="product 3">
+        <div class="meta">
+          <h5>Fur Bean Bed</h5>
+          <p>Sumptuous and cozy, a unique lounge experience.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop" alt="product 4">
+        <div class="meta">
+          <h5>Luxe Wall Jewelry</h5>
+          <p>Large decorative wall piece using pearls and wire.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="product 5">
+        <div class="meta">
+          <h5>Blue Chocolate Box</h5>
+          <p>Signature confections — perfect gift idea.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop" alt="product 6">
+        <div class="meta">
+          <h5>Signature Jewelry</h5>
+          <p>Handmade fashion jewelry for a high-class look.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Welcome + Site content -->
+<section class="section container">
+  <div class="welcome reveal">
+    <div class="text">
+      <h3>Welcome</h3>
+      <p>There's much to see here. So, take your time, look around, and learn all there is to know about us. We hope you enjoy our site and take a moment to drop us a line.</p>
+      <div style="margin-top:18px">
+        <a class="btn primary" href="#contact">Find out more</a>
+      </div>
+    </div>
+    <aside class="side">
+      <h4>Site Content</h4>
+      <hr style="border:none;border-top:1px solid #f0f0f0;margin:10px 0 16px">
+      <ul style="padding-left:18px; margin:0; color:var(--muted)">
+        <li>Detail your services</li>
+        <li>Announce coming events</li>
+        <li>Display real testimonials</li>
+        <li>Promote current deals</li>
+        <li>Share the big news</li>
+        <li>Display FAQs</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- Contact / VIP -->
+<section id="contact" class="section container">
+  <div class="reveal">
+    <h3>Contact Us</h3>
+    <div style="height:12px"></div>
+    <div class="contact">
+      <div>
+        <h4>Get in touch!</h4>
+        <p>Looking for something special? Have a question? Let us know, and we'll get back to you soon.</p>
+        <p style="margin-top:12px"><strong>Imacx</strong><br>8452939172</p>
+        <p><strong>Hours</strong><br>Open today<br>09:00 am – 05:00 pm</p>
+      </div>
+
+      <div style="min-width:260px">
+        <h4>Join Our VIP List</h4>
+        <p style="color:var(--muted)">Email</p>
+        <div class="vip">
+          <input id="vipEmail" type="email" placeholder="you@email.com" aria-label="email">
+          <button onclick="submitVIP()">Sign up</button>
+        </div>
+        <div id="vipMsg" style="margin-top:8px;color:green;display:none">Thanks — you've been added to the VIP list!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="container">
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+    <div style="font-weight:600">Copyright © 2025 Imacx - All Rights Reserved.</div>
+    <div style="color:var(--muted)">Powered by creamer dreamer</div>
+  </div>
+</footer>
+
+<!-- Cookie consent -->
+<div class="cookie" id="cookieBar" role="dialog" aria-live="polite">
+  <p>We use cookies to analyze website traffic and optimize your website experience. By accepting our use of cookies, your data will be aggregated with all other user data.</p>
+  <div style="display:flex; gap:8px; align-items:center">
+    <button onclick="acceptCookies()">Accept</button>
   </div>
 </div>
 
-  
-  <!-- Search, Sort, Filter -->
-  <div class="search-sort-filter">
-    <input type="text" id="searchBar" placeholder="Search by product name...">
-    <select id="sort">
-      <option value="">Sort By</option>
-      <option value="low">Price: Low to High</option>
-      <option value="high">Price: High to Low</option>
-    </select>
-    <select id="filter-category">
-      <option value="">Filter by Category</option>
-      <option value="skincare">Skincare</option>
-      <option value="food">Food</option>
-    </select>
-    <select id="filter-subcategory">
-      <option value="">Filter by Subcategory</option>
-      <option value="cream">Cream</option>
-      <option value="chocolate">Chocolate</option>
-      <option value="breakfast">Breakfast Spread</option>
-    </select>
-  </div>
-
-  <!-- Products Grid -->
-  <div class="products-container" id="products"></div>
-
-  <!-- Product Popup Modal with Carousel -->
-  <div id="productPopup">
-    <div class="popup-content">
-      <button onclick="closePopup()" style="position:absolute; top:10px; right:15px; background:none; border:none; font-size:20px; color:red;">&times;</button>
-      <div class="carousel">
-        <button class="prev" onclick="prevPopupImage()">&#10094;</button>
-        <img id="popupImage" src="" alt="">
-        <button class="next" onclick="nextPopupImage()">&#10095;</button>
-      </div>
-      <h2 id="popupTitle" style="color:goldenrod;"></h2>
-      <p id="popupDescription" style="margin:1rem 0;"></p>
-      <strong id="popupPrice" style="color:green"></strong>
-      <div class="quantity-controls" style="margin:1rem 0;">
-        <button onclick="updateQty(this,-1)">-</button>
-        <input type="number" value="1" readonly>
-        <button onclick="updateQty(this,1)">+</button>
-      </div>
-      <button onclick="addToBasketFromPopup()" class="add-to-basket-btn">Add to Basket</button>
+<!-- Signup modal (simple) -->
+<div id="signupModal" style="position:fixed; left:0; top:0; right:0; bottom:0; display:none; align-items:center; justify-content:center; z-index:80; background:rgba(0,0,0,0.45)">
+  <div style="background:#fff; padding:20px; border-radius:10px; width:92%; max-width:520px; box-shadow:0 30px 80px rgba(0,0,0,0.3)">
+    <h3 style="margin-top:0">Join Our VIP List</h3>
+    <p style="color:var(--muted)">Sign up to get updates, new product notifications, and exclusive offers.</p>
+    <div style="display:flex; gap:8px; margin-top:10px">
+      <input id="modalEmail" type="email" placeholder="you@email.com" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee">
+      <button class="btn primary" onclick="submitModal()">Sign up</button>
+    </div>
+    <div style="text-align:right; margin-top:12px">
+      <button onclick="closeSignup()" style="background:none; border:0; color:var(--muted)">Close</button>
     </div>
   </div>
+</div>
 
-  <footer>&copy; 2025 imacx Shop. All rights reserved.</footer>
+<script>
+  // slideshow logic (auto + dots)
+  const slides = document.getElementById('slides');
+  const dotsWrap = document.getElementById('dots');
+  const slideCount = slides.children.length;
+  let index = 0;
 
-  <!-- Scripts -->
-  <script>
-    // Navbar toggle
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display==='flex'?'none':'flex';
+  function createDots(){
+    for(let i=0;i<slideCount;i++){
+      const d = document.createElement('div');
+      d.className='dot';
+      d.addEventListener('click',()=>{goTo(i)});
+      dotsWrap.appendChild(d);
     }
-
-    // GunDB setup
-    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
-
-    // User ID
-    if (!localStorage.getItem('userId')) localStorage.setItem('userId','user_'+Math.random().toString(36).slice(2));
-
-    // Basket helpers
-    function getBasket() { return JSON.parse(localStorage.getItem('basket'))||[]; }
-    function saveBasket(basket) { localStorage.setItem('basket', JSON.stringify(basket)); }
-
-    function updateQty(btn, delta){
-      const input = btn.parentNode.querySelector('input');
-      let val = parseInt(input.value)+delta;
-      if(val<1) val=1;
-      input.value=val;
-    }
-
-    function addToBasket(button){
-      const card=button.closest('.product-card');
-      const name=card.getAttribute('data-name');
-      const price=parseFloat(card.getAttribute('data-price'));
-      const qty=parseInt(card.querySelector('input').value);
-      const image=card.querySelector('img').src;
-      const category=card.getAttribute('data-category');
-      const subcategory=card.getAttribute('data-subcategory');
-      if(qty<=0){alert("Select quantity"); return;}
-
-      let basket = getBasket();
-      const idx = basket.findIndex(i=>i.name===name);
-      if(idx>-1) basket[idx].quantity+=qty;
-      else basket.push({name,price,quantity:qty,image,category,subcategory});
-      saveBasket(basket);
-
-      // Sync with GunDB
-      const userId=localStorage.getItem('userId');
-      const ref = gun.get('imacx_user_baskets').get(userId);
-      ref.put({updatedAt:Date.now()});
-      basket.forEach(item=>ref.get(item.name).put(item));
-
-      alert(`${qty} × ${name} added to basket.`);
-    }
-
-    // Product Popup
-    let selectedProduct=null, popupImages=[], popupIndex=0;
-    function openPopup(product){
-      selectedProduct=product;
-      popupImages = product.images || [product.image];
-      popupIndex=0;
-      document.getElementById("popupTitle").textContent=product.name;
-      document.getElementById("popupDescription").textContent=product.description||"No description available.";
-      document.getElementById("popupPrice").textContent=`₹${product.price}`;
-      document.getElementById("popupImage").src=popupImages[popupIndex];
-      document.querySelector("#productPopup input").value=1;
-      document.getElementById("productPopup").style.display="flex";
-      history.pushState({product:product.name},"",`?product=${encodeURIComponent(product.name)}`);
-    }
-    // Corrected closePopup function
-function closePopup() {
-  const popup = document.getElementById("productPopup");
-  if (popup) popup.style.display = "none";
-  selectedProduct = null;
-  history.pushState("", document.title, window.location.pathname); // remove ?product= from URL
-}
-
-// Close when clicking outside the content
-document.getElementById("productPopup").addEventListener("click", function(e){
-  if(e.target === this){ // click only on overlay
-    closePopup();
+    dotsWrap.children[0].classList.add('active');
   }
-});
-    function nextPopupImage(){popupIndex=(popupIndex+1)%popupImages.length; document.getElementById("popupImage").src=popupImages[popupIndex];}
-    function prevPopupImage(){popupIndex=(popupIndex-1+popupImages.length)%popupImages.length; document.getElementById("popupImage").src=popupImages[popupIndex];}
-
-    // Swipe support
-    const popupImgEl=document.getElementById("popupImage");
-    let startX=0;
-    popupImgEl.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-    popupImgEl.addEventListener("touchend",e=>{
-      const endX=e.changedTouches[0].clientX;
-      if(endX-startX>50) prevPopupImage();
-      else if(startX-endX>50) nextPopupImage();
-    });
-
-    function addToBasketFromPopup(){
-      const qty=parseInt(document.querySelector("#productPopup input").value);
-      if(!selectedProduct || qty<=0) return;
-      let basket = getBasket();
-      const idx = basket.findIndex(i=>i.name===selectedProduct.name);
-      if(idx>-1) basket[idx].quantity+=qty;
-      else basket.push({
-        name:selectedProduct.name,
-        price:selectedProduct.price,
-        quantity:qty,
-        image:selectedProduct.image,
-        category:selectedProduct.category,
-        subcategory:selectedProduct.subcategory
-      });
-      saveBasket(basket);
-
-      // GunDB sync
-      const userId=localStorage.getItem('userId');
-      const ref=gun.get('imacx_user_baskets').get(userId);
-      ref.put({updatedAt:Date.now()});
-      basket.forEach(item=>ref.get(item.name).put(item));
-
-      alert(`${qty} × ${selectedProduct.name} added to basket.`);
-      closePopup();
-    }
-
-    // Products rendering
-    const allProducts = [
-      {name:"iMacx Iconic Face Cream",
-       price:2200,
-      category:"skincare",
-      subcategory:"cream",
-      description:"Sculpt your skin with ultimate peptidesSculpt your skiSculpt your skiSculpt your skiSculpt your skiSculpt your skiSculpt your skiSculpt your skSculpt your skSculpt your skSculpt your skSculpt your skSculpt your skSculpt your skiSculpt your skiiiiiii  .",
-      images:[
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-        "https://example.com/image3.jpg"
-      ]
-    },
-    {
-      name:"Cosmacx Moisturizer Elixir",
-      price:1850,
-      category:"skincare",
-      subcategory:"cream",
-      description:"Deep hydration for gleaming skin.",
-      images:[
-        "https://example.com/moisturizer.jpg",
-        "https://example.com/moisturizer2.jpg"
-      ]
-    },
-    {
-      name:"Dark Chocolate Spread",
-      price:600,
-      category:"food",
-      subcategory:"chocolate",
-      description:"Rich chocolate spread for breakfast.",
-      images:[
-        "https://example.com/chocolate.jpg",
-        "https://example.com/chocolate2.jpg"
-      ]
-    }
-  ];
-
-  function renderProducts(products){
-    const container=document.getElementById("products");
-    container.innerHTML="";
-    products.forEach(p=>{
-      const card=document.createElement("div");
-      card.className="product-card";
-      card.setAttribute("data-name",p.name);
-      card.setAttribute("data-price",p.price);
-      card.setAttribute("data-category",p.category);
-      card.setAttribute("data-subcategory",p.subcategory);
-
-      card.innerHTML=`
-        <img src="${p.images[0]}" alt="${p.name}" class="product-image">
-        <div class="product-name">${p.name}</div>
-        <div>₹${p.price}</div>
-        <div class="quantity-controls">
-          <button class="qty-minus">-</button>
-          <input type="number" value="0" readonly>
-          <button class="qty-plus">+</button>
-        </div>
-        <button class="add-to-basket-btn">Add to Basket</button>
-      `;
-      container.appendChild(card);
-
-      card.querySelector(".product-image").addEventListener("click",()=>openPopup(p));
-      card.querySelector(".product-name").addEventListener("click",()=>openPopup(p));
-      card.querySelector(".qty-minus").addEventListener("click",e=>updateQty(e.target,-1));
-      card.querySelector(".qty-plus").addEventListener("click",e=>updateQty(e.target,1));
-      card.querySelector(".add-to-basket-btn").addEventListener("click",e=>addToBasket(e.target));
+  function refreshDots(){
+    Array.from(dotsWrap.children).forEach((el, i)=>{
+      el.classList.toggle('active', i===index);
     });
   }
-
-  // Initial render
-  document.addEventListener("DOMContentLoaded",()=>renderProducts(allProducts));
-
-  // Search
-  document.getElementById('searchBar').addEventListener('input',function(){
-    const search=this.value.toLowerCase();
-    renderProducts(allProducts.filter(p=>p.name.toLowerCase().includes(search)));
-  });
-
-  // Sort
-  document.getElementById('sort').addEventListener('change',function(){
-    let sorted=[...allProducts];
-    if(this.value==='low') sorted.sort((a,b)=>a.price-b.price);
-    else if(this.value==='high') sorted.sort((a,b)=>b.price-a.price);
-    renderProducts(sorted);
-  });
-
-  // Filter
-  function applyFilters(){
-    const cat=document.getElementById('filter-category').value;
-    const sub=document.getElementById('filter-subcategory').value;
-    renderProducts(allProducts.filter(p=>{
-      const catMatch=!cat || p.category===cat;
-      const subMatch=!sub || p.subcategory===sub;
-      return catMatch && subMatch;
-    }));
+  function goTo(i){
+    index = i;
+    slides.style.transform = `translateX(-${index*100}%)`;
+    refreshDots();
   }
-  document.getElementById('filter-category').addEventListener('change',applyFilters);
-  document.getElementById('filter-subcategory').addEventListener('change',applyFilters);
+  createDots();
+  let slideTimer = setInterval(()=>{
+    index = (index + 1) % slideCount;
+    goTo(index);
+  },5000);
 
-  // Handle product in URL
-  const productParam = new URLSearchParams(window.location.search).get("product");
-  if(productParam){
-    const prod = allProducts.find(p=>p.name===productParam);
-    if(prod) openPopup(prod);
+  // pause on hover
+  document.querySelector('.hero').addEventListener('mouseenter', ()=>clearInterval(slideTimer));
+  document.querySelector('.hero').addEventListener('mouseleave', ()=>slideTimer = setInterval(()=>{
+    index = (index + 1) % slideCount; goTo(index);
+  },5000));
+
+  // reveal on scroll
+  function revealOnScroll(){
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight - 80){
+        el.classList.add('show');
+      }
+    });
   }
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+
+  // simple VIP signup handlers
+  function submitVIP(){
+    const e = document.getElementById('vipEmail'); const msg = document.getElementById('vipMsg');
+    if(!e.value || !e.value.includes('@')){ alert('Please enter a valid email'); return;}
+    e.value=''; msg.style.display='block';
+    setTimeout(()=>msg.style.display='none',3000);
+  }
+  function openSignup(){ document.getElementById('signupModal').style.display='flex'; }
+  function closeSignup(){ document.getElementById('signupModal').style.display='none'; }
+  function submitModal(){
+    const e = document.getElementById('modalEmail');
+    if(!e.value || !e.value.includes('@')){ alert('Please enter a valid email'); return;}
+    alert('Thanks — you have been added to the VIP list!');
+    e.value=''; closeSignup();
+  }
+  function scrollToSection(sel){
+    const el = document.querySelector(sel);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // cookie accept
+  function acceptCookies(){
+    localStorage.setItem('imacx_cookie', '1');
+    document.getElementById('cookieBar').style.display='none';
+  }
+  if(localStorage.getItem('imacx_cookie')) document.getElementById('cookieBar').style.display='none';
+
+  // small accessibility: close modal on Escape
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeSignup(); }});
 </script>
+
 </body>
 </html>
