@@ -99,6 +99,54 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 /* Responsive */
 @media(max-width:900px){.hero .overlay{flex-direction:column;align-items:flex-start}.hero .right{display:none}.features{grid-template-columns:1fr}.topbar{padding:0 14px}.brand h1{font-size:18px}.grid{gap:12px;}}
 @media(max-width:600px){.product img{height:160px}.hero{padding:20px 0}.hero .left h2{font-size:26px}.section{padding:28px 12px;}}
+
+/* Contact Us Section */
+#contact-us {
+  padding: 48px 0;
+  background: #faf9f7;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.contact-item {
+  flex: 1 1 220px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(12,12,12,0.04);
+  transition: all 0.25s;
+}
+
+.contact-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(12,12,12,0.08);
+}
+
+.contact-item h4 {
+  margin: 0 0 8px;
+  font-family: "Playfair Display";
+  font-size: 18px;
+}
+
+.contact-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@media(max-width:900px){
+  .contact-info {
+    flex-direction: column;
+  }
+}
+
+
 </style>
 </head>
 <body>
@@ -215,7 +263,27 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   </div>
 </section>
 
-<!-- Footer -->
+<!-- Contact Us Section -->
+<section id="contact-us" class="section container reveal">
+  <h3>Contact Us</h3>
+  <div style="height:12px"></div>
+  <div class="contact-info">
+    <div class="contact-item">
+      <h4>Phone</h4>
+      <p>+91 8452939172</p>
+    </div>
+    <div class="contact-item">
+      <h4>Email</h4>
+      <p>macxyy12@gmail.com</p>
+    </div>
+    <div class="contact-item">
+      <h4>Timings</h4>
+      <p>Monday - Friday: 09:00 am – 05:00 pm<br>Saturday: 10:00 am – 03:00 pm</p>
+    </div>
+  </div>
+</section>
+  
+  <!-- Footer -->
 <footer class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
     <div style="font-weight:600">Copyright © 2025 Imacx - All Rights Reserved.</div>
