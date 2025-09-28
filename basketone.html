@@ -3,224 +3,406 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Basket - imacx Shop</title>
+  <title>Basket - Imacx Shop</title>
 
-  <!-- Libraries -->
+  <!-- Libraries (same as your original) -->
   <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+  <!-- Fonts (match Imacx) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: 'Cursive', sans-serif;
-      background: #fff;
-      color: goldenrod;
-      padding: 1rem;
+    :root{
+      --accent:#9ed9bb;
+      --dark:#0f1414;
+      --muted:#6b6b6b;
+      --card:#ffffff;
+      --bg:#faf9f7;
+      --max-width:1200px;
+      --radius:12px;
     }
-    h2 { color: goldenrod; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-    th, td {
-      border: 1px solid goldenrod;
-      padding: 0.5rem;
-      text-align: center;
+    *{box-sizing:border-box}
+    body{
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased;
     }
-    img { border-radius: 5px; }
-    input, textarea, button {
-      font-family: 'Cursive', sans-serif;
-      padding: 0.5rem;
-      border: 1px solid goldenrod;
-      margin: 0.3rem 0;
+
+    /* Header (Imacx style) */
+    header{
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+      position:sticky; top:0; z-index:60; backdrop-filter: blur(4px);
+      border-bottom:1px solid rgba(0,0,0,0.04);
     }
-    button {
-      background: goldenrod;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
+    .topbar{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--max-width);margin:0 auto;padding:0 20px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:48px;width:48px;object-fit:contain}
+    .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{padding:8px 10px;border-radius:8px;font-weight:600;color:var(--dark); text-decoration:none}
+    nav a.primary{background:var(--accent); color:#fff; padding:8px 14px; border-radius:20px}
+
+    /* Page container */
+    .container{max-width:var(--max-width);margin:18px auto;padding:0 20px}
+
+    /* Page title */
+    .page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .page-head h2{font-family:"Playfair Display";margin:0;font-size:22px}
+
+    /* Search box */
+    .search-box{width:100%;max-width:520px}
+    .search-box input{
+      width:100%; padding:12px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);
+      box-shadow:0 8px 24px rgba(16,16,16,0.03); background:#fff;
+      font-size:15px;
     }
-    #searchBox {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid goldenrod;
-    }
+
+    /* Layout: left = basket table, right = shipping card */
+    .layout{display:grid;grid-template-columns: 1fr 340px; gap:20px; align-items:start}
+    @media(max-width:980px){ .layout{grid-template-columns:1fr;}}
+
+    /* Basket table card */
+    .card { background:var(--card); border-radius:var(--radius); box-shadow:0 12px 40px rgba(12,12,12,0.06); padding:16px; }
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px 8px;text-align:left;vertical-align:middle;border-bottom:1px solid #f3f3f3}
+    th{color:var(--muted);font-weight:700}
+    .qty-input{width:84px;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+    .delete-btn{background:#fff;border:1px solid rgba(0,0,0,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+    .product-cell{display:flex;align-items:center;gap:12px}
+    .product-thumb{width:84px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0}
+
+    /* Totals row */
+    .totals{display:flex;align-items:center;justify-content:space-between;padding-top:12px;font-weight:700;font-size:16px}
+
+    /* Shipping form card */
+    .shipping-card h3{margin-top:0;margin-bottom:6px}
+    .field{margin-bottom:10px}
+    .field label{display:block;font-weight:600;margin-bottom:6px}
+    .field input, .field textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);font-size:14px}
+    .pay-btn{background:var(--accent);color:#fff;border:0;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+
+    /* Empty */
+    .empty{padding:40px;text-align:center;color:var(--muted)}
+
+    /* Footer small */
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+
   </style>
 </head>
 <body>
-  <h2>🛒 Basket</h2>
-  <input type="text" id="searchBox" placeholder="Search basket...">
-  <div id="basket-table"></div>
 
-  <h2>Shipping Details</h2>
-  <form id="shippingForm">
-    <label>Recipient Name: <input type="text" id="recipient" required></label><br>
-    <label>Email: <input type="email" id="email" required></label><br>
-    <label>Country Code: <input type="text" id="countryCode" required></label>
-    <label>Phone: <input type="text" id="phone" required></label><br>
-    <label>Address: <textarea id="address" required></textarea></label><br>
-    <label>Area: <input type="text" id="area" required></label>
-    <label>City: <input type="text" id="city" required></label><br>
-    <label>State: <input type="text" id="state" required></label>
-    <label>Country: <input type="text" id="country" required></label>
-    <label>Zip: <input type="text" id="zip" required></label><br>
+  <!-- Header (Imacx style) -->
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <img src="https://img1.wsimg.com/isteam/ip/0f396d5e-e6a9-49d8-98cc-996f063b2f98/icon.png" alt="Imacx logo">
+        <div>
+          <h1>Imacx</h1>
+          <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
+        </div>
+      </div>
 
-    <button type="submit">💳 Pay Now</button>
-  </form>
+      <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="basketone.html" class="primary">Basket</a>
+      </nav>
+    </div>
+  </header>
 
-  <script>
-    // GunDB setup
-    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
-    const globalOrders = gun.get('imacx_orders');
+  <main class="container" role="main">
+    <div class="page-head">
+      <h2>🛒 Basket</h2>
+      <div class="search-box" aria-label="Search basket">
+        <input id="searchBox" type="text" placeholder="Search basket by name, category or subcategory...">
+      </div>
+    </div>
 
-    let total = 0;
+    <div class="layout">
+      <!-- Left: Basket Table -->
+      <section class="card" aria-labelledby="basket-title">
+        <h3 id="basket-title" style="margin-top:0">Your Items</h3>
+        <div id="basket-table" class="table-wrap" style="margin-top:8px"></div>
+        <div id="totalsWrap" style="margin-top:12px"></div>
+      </section>
 
-    // Basket helpers
-    function getBasket() {
-      return JSON.parse(localStorage.getItem('basket')) || [];
+      <!-- Right: Shipping / Pay -->
+      <aside class="card shipping-card" aria-labelledby="shipping-title">
+        <h3 id="shipping-title">Shipping Details</h3>
+
+        <form id="shippingForm" novalidate>
+          <div class="field">
+            <label for="recipient">Recipient Name</label>
+            <input type="text" id="recipient" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+          </div>
+
+          <div style="display:grid;grid-template-columns:100px 1fr;gap:8px">
+            <div class="field">
+              <label for="countryCode">Code</label>
+              <input type="text" id="countryCode" placeholder="+91" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="text" id="phone" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="address">Address</label>
+            <textarea id="address" rows="3" required></textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="field">
+              <label for="area">Area</label>
+              <input type="text" id="area" required>
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" required>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="field">
+              <label for="state">State</label>
+              <input type="text" id="state" required>
+            </div>
+            <div class="field">
+              <label for="country">Country</label>
+              <input type="text" id="country" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="zip">Zip</label>
+            <input type="text" id="zip" required>
+          </div>
+
+          <button type="submit" class="pay-btn">💳 Pay Now</button>
+
+          <div class="note">We use Razorpay for payments. Please replace the test key with your live key when ready.</div>
+        </form>
+      </aside>
+    </div>
+
+  </main>
+
+<script>
+  // GunDB setup (same as original)
+  const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+  const globalOrders = gun.get('imacx_orders');
+
+  let total = 0;
+
+  // Basket helpers (same keys + behaviour)
+  function getBasket() {
+    return JSON.parse(localStorage.getItem('basket')) || [];
+  }
+
+  function saveBasket(basket) {
+    localStorage.setItem('basket', JSON.stringify(basket));
+    updateTotalsUI();
+  }
+
+  // Render basket into a responsive table-like layout
+  function renderBasket(filtered = null) {
+    const basket = filtered || getBasket();
+    const container = document.getElementById('basket-table');
+
+    if (!basket || basket.length === 0) {
+      container.innerHTML = `<div class="empty">No items in basket.</div>`;
+      document.getElementById('totalsWrap').innerHTML = '';
+      updateBasketCountUI();
+      return;
     }
 
-    function saveBasket(basket) {
-      localStorage.setItem('basket', JSON.stringify(basket));
-    }
-
-    function renderBasket(filtered = null) {
-      const basket = filtered || getBasket();
-      if (basket.length === 0) {
-        document.getElementById('basket-table').innerHTML = '<p>No items in basket.</p>';
-        return;
-      }
-
-      total = 0;
-      let html = `<table>
+    total = 0;
+    // Build table HTML (keeps same columns + quantity input behaviour)
+    let html = `<table aria-live="polite">
+      <thead>
         <tr>
-          <th>Image</th><th>Name</th><th>Qty</th><th>Price</th>
-          <th>Total</th><th>Category</th><th>Subcategory</th><th>Action</th>
-        </tr>`;
+          <th>Image</th>
+          <th>Name</th>
+          <th style="width:110px">Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Category</th>
+          <th>Subcategory</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>`;
 
-      basket.forEach((item, index) => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        html += `<tr>
-          <td><img src="${item.image}" width="60"></td>
-          <td>${item.name}</td>
-          <td>
-            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)">
-          </td>
-          <td>₹${item.price}</td>
-          <td>₹${itemTotal}</td>
-          <td>${item.category || '-'}</td>
-          <td>${item.subcategory || '-'}</td>
-          <td><button onclick="deleteItem(${index})">Delete</button></td>
-        </tr>`;
-      });
+    basket.forEach((item, index) => {
+      const itemTotal = Number(item.price) * Number(item.quantity);
+      total += itemTotal;
 
-      html += `<tr><td colspan="4"><strong>Grand Total</strong></td><td colspan="4"><strong>₹${total}</strong></td></tr></table>`;
-      document.getElementById('basket-table').innerHTML = html;
-    }
-
-    function updateQuantity(index, qty) {
-      const basket = getBasket();
-      basket[index].quantity = parseInt(qty, 10) || 1;
-      saveBasket(basket);
-      renderBasket();
-    }
-
-    function deleteItem(index) {
-      const basket = getBasket();
-      basket.splice(index, 1);
-      saveBasket(basket);
-      renderBasket();
-    }
-
-    // Payment flow directly on form submit
-    document.getElementById("shippingForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const basket = getBasket();
-      if (!basket.length) return alert("Basket empty.");
-
-      const shipping = {
-        recipient: document.getElementById('recipient').value,
-        email: document.getElementById('email').value,
-        countryCode: document.getElementById('countryCode').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        area: document.getElementById('area').value,
-        city: document.getElementById('city').value,
-        state: document.getElementById('state').value,
-        country: document.getElementById('country').value,
-        zip: document.getElementById('zip').value
-      };
-
-      total = basket.reduce((sum, i) => sum + i.price * i.quantity, 0);
-      const orderId = 'IMX' + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-      const newOrder = {
-        orderId,
-        basket,
-        shipping,
-        total,
-        status: "Pending Payment",
-        timestamp: Date.now()
-      };
-
-      // Save to GunDB + local
-      try {
-        globalOrders.get(orderId).put(newOrder);
-        globalOrders.set(newOrder);
-      } catch (e) {
-        console.error("GunDB error:", e);
-      }
-
-      const localOrders = JSON.parse(localStorage.getItem('admin_orders')) || [];
-      localOrders.push(newOrder);
-      localStorage.setItem('admin_orders', JSON.stringify(localOrders));
-
-      // Razorpay
-      const options = {
-        key: "rzp_test_xxxxx", // Replace with your Razorpay key
-        amount: Math.round(total * 100),
-        currency: "INR",
-        name: "imacx Shop",
-        description: `Order ID: ${orderId}`,
-        notes: { orderId, ...shipping },
-        handler: function (response) {
-          alert("✅ Payment successful: " + response.razorpay_payment_id);
-
-          globalOrders.get(orderId).get('status').put('Payment Done');
-
-          localStorage.setItem('orderData', JSON.stringify({
-            ...newOrder,
-            status: 'Payment Done',
-            razorpay_payment_id: response.razorpay_payment_id
-          }));
-
-          localStorage.removeItem('basket');
-          window.location.href = "thankyou.html";
-        },
-        prefill: {
-          name: shipping.recipient,
-          email: shipping.email,
-          contact: shipping.countryCode + shipping.phone
-        },
-        theme: { color: "#bfa046" }
-      };
-
-      new Razorpay(options).open();
+      html += `<tr>
+        <td><div class="product-cell"><img class="product-thumb" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}"></div></td>
+        <td>${escapeHtml(item.name)}</td>
+        <td>
+          <input class="qty-input" type="number" min="1" value="${Number(item.quantity)}" onchange="updateQuantity(${index}, this.value)">
+        </td>
+        <td>₹${Number(item.price)}</td>
+        <td>₹${itemTotal}</td>
+        <td>${escapeHtml(item.category || '-')}</td>
+        <td>${escapeHtml(item.subcategory || '-')}</td>
+        <td><button class="delete-btn" onclick="deleteItem(${index})">Delete</button></td>
+      </tr>`;
     });
 
-    // Search basket
-    document.getElementById('searchBox').addEventListener('input', e => {
-      const query = e.target.value.trim();
-      const basket = getBasket();
-      if (!query) return renderBasket(basket);
+    html += `</tbody></table>`;
+    container.innerHTML = html;
 
-      const fuse = new Fuse(basket, { keys: ['name', 'category', 'subcategory'], threshold: 0.3 });
-      const results = fuse.search(query).map(r => r.item);
-      renderBasket(results);
-    });
+    // Totals UI (Grand total)
+    document.getElementById('totalsWrap').innerHTML = `
+      <div class="totals">
+        <div>Grand Total</div>
+        <div>₹${total}</div>
+      </div>
+    `;
 
-    // Init
+    updateBasketCountUI();
+  }
+
+  // Ensure numeric conversion and update
+  function updateQuantity(index, qty) {
+    const basket = getBasket();
+    const numeric = parseInt(qty, 10) || 1;
+    if (numeric < 1) { basket[index].quantity = 1; }
+    else { basket[index].quantity = numeric; }
+    saveBasket(basket);
     renderBasket();
-  </script>
+  }
+
+  function deleteItem(index) {
+    const basket = getBasket();
+    basket.splice(index, 1);
+    saveBasket(basket);
+    renderBasket();
+  }
+
+  // Keep totals updated in UI header/badge (if you use badges elsewhere)
+  function updateBasketCountUI(){
+    const count = getBasket().reduce((s,i)=> s + (Number(i.quantity)||0), 0);
+    // if you have topbar badges, update them (two possible ids)
+    const el = document.querySelectorAll('#basketCount, #basketCountTop');
+    el.forEach(node => { if(node) node.textContent = count; });
+  }
+
+  // Payment flow directly on form submit (keeps behaviour)
+  document.getElementById("shippingForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const basket = getBasket();
+    if (!basket.length) return alert("Basket empty.");
+
+    const shipping = {
+      recipient: document.getElementById('recipient').value,
+      email: document.getElementById('email').value,
+      countryCode: document.getElementById('countryCode').value || '',
+      phone: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      area: document.getElementById('area').value,
+      city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
+      country: document.getElementById('country').value,
+      zip: document.getElementById('zip').value
+    };
+
+    total = basket.reduce((sum, i) => sum + Number(i.price) * Number(i.quantity), 0);
+    const orderId = 'IMX' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+    const newOrder = {
+      orderId,
+      basket,
+      shipping,
+      total,
+      status: "Pending Payment",
+      timestamp: Date.now()
+    };
+
+    // Save to GunDB + local
+    try {
+      globalOrders.get(orderId).put(newOrder);
+      globalOrders.set(newOrder);
+    } catch (e) {
+      console.error("GunDB error:", e);
+    }
+
+    const localOrders = JSON.parse(localStorage.getItem('admin_orders')) || [];
+    localOrders.push(newOrder);
+    localStorage.setItem('admin_orders', JSON.stringify(localOrders));
+
+    // Razorpay - replace key with yours
+    const options = {
+      key: "rzp_test_xxxxx", // Replace with your Razorpay key
+      amount: Math.round(total * 100),
+      currency: "INR",
+      name: "Imacx Shop",
+      description: `Order ID: ${orderId}`,
+      notes: { orderId, ...shipping },
+      handler: function (response) {
+        alert("✅ Payment successful: " + response.razorpay_payment_id);
+
+        globalOrders.get(orderId).get('status').put('Payment Done');
+
+        localStorage.setItem('orderData', JSON.stringify({
+          ...newOrder,
+          status: 'Payment Done',
+          razorpay_payment_id: response.razorpay_payment_id
+        }));
+
+        localStorage.removeItem('basket');
+        window.location.href = "thankyou.html";
+      },
+      prefill: {
+        name: shipping.recipient,
+        email: shipping.email,
+        contact: (shipping.countryCode || '') + shipping.phone
+      },
+      theme: { color: "#bfa046" }
+    };
+
+    new Razorpay(options).open();
+  });
+
+  // Search basket (Fuse)
+  document.getElementById('searchBox').addEventListener('input', e => {
+    const query = e.target.value.trim();
+    const basket = getBasket();
+    if (!query) return renderBasket(basket);
+
+    const fuse = new Fuse(basket, { keys: ['name', 'category', 'subcategory'], threshold: 0.3 });
+    const results = fuse.search(query).map(r => r.item);
+    renderBasket(results);
+  });
+
+  // Utility: escape to avoid HTML injection when rendering strings
+  function escapeHtml(str){
+    if(!str && str!==0) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function(){
+    renderBasket();
+    updateBasketCountUI();
+  });
+</script>
 </body>
 </html>
