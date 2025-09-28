@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Shop — Imacx</title>
+
+<!-- Fuse.js for search -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+
+<style>
+  :root{
+    --accent:#9ed9bb;
+    --dark:#0f1414;
+    --muted:#6b6b6b;
+    --bg:#faf9f7;
+    --card:#fff;
+    --max-width:1200px;
+  }
+  *{box-sizing:border-box}
+  body{font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:var(--dark);}
+  .container{max-width:var(--max-width); margin:0 auto; padding:20px}
+
+  /* header */
+  .top {
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-bottom:18px;
+  }
+  .brand {display:flex; align-items:center; gap:12px}
+  .brand img{height:44px; width:44px; object-fit:contain}
+  .brand h1{font-family:"Playfair Display"; font-size:20px; margin:0}
+  .controls {display:flex; gap:12px; align-items:center}
+  .search {padding:10px 12px; border-radius:8px; border:1px solid #eee; min-width:260px}
+  .basket-link {background:var(--accent); color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:700}
+  .badge {background:#fff;color:var(--accent);padding:4px 8px;border-radius:999px;margin-left:8px;font-weight:700}
+
+  /* grid */
+  .grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px}
+  .card {background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.06); display:flex; flex-direction:column;}
+  .card img{width:100%; height:180px; object-fit:cover; display:block}
+  .meta {padding:12px; display:flex; flex-direction:column; gap:8px; flex:1}
+  .meta h4{margin:0;font-size:16px}
+  .meta p{margin:0;color:var(--muted);font-size:14px}
+  .meta .row {display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .meta label{font-size:13px;color:var(--muted)}
+  .actions {display:flex; gap:8px; padding:12px; border-top:1px solid #f0f0f0; background:linear-gradient(180deg,#fff,#fbfbfb)}
+  .btn {padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700}
+  .btn.add {background:var(--accent); color:#fff}
+  .btn.visit {background:transparent; border:1px solid #eee}
+  .like {margin-left:auto; cursor:pointer; font-size:18px; color:var(--muted)}
+  .variant, .qty {padding:8px; border-radius:8px; border:1px solid #eee; background:#fff}
+  .empty {text-align:center; color:var(--muted); padding:40px 0}
+
+  @media(max-width:700px){
+    .search {min-width:140px}
+    .meta p{font-size:13px}
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div class="brand">
+        <img src="https://img1.wsimg.com/isteam/ip/0f396d5e-e6a9-49d8-98cc-996f063b2f98/icon.png" alt="logo">
+        <div>
+          <h1>Imacx Shop</h1>
+          <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input id="searchInput" class="search" placeholder="Search products by name, category...">
+        <a id="basketLink" class="basket-link" href="basket.html">Basket <span id="basketCount" class="badge">0</span></a>
+      </div>
+    </div>
+
+    <div id="productsGrid" class="grid" role="list"></div>
+
+    <div id="noResults" class="empty" style="display:none">No products found.</div>
+  </div>
+
+<script>
+/* -------------------------
+   Product data (20 items)
+   ------------------------- */
+const PRODUCTS = [
+  { id: 'p1', name: 'Imacx Iconic Chair', slug:'imacx-iconic-chair', category:'Seating', subcategory:'Chair', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', description:'Luxury handcrafted chair.', variants:[{name:'Standard',price:4999},{name:'Deluxe',price:6999}] },
+  { id: 'p2', name: 'Silk Comfort Pillow', slug:'silk-comfort-pillow', category:'Textiles', subcategory:'Pillow', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', description:'Soft silk pillow.', variants:[{name:'Single',price:1199},{name:'Set of 2',price:2199}] },
+  { id: 'p3', name: 'Fur Bean Bed', slug:'fur-bean-bed', category:'Lounge', subcategory:'Bean Bag', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', description:'Sumptuous fur bean bed.', variants:[{name:'Medium',price:6999},{name:'Large',price:8999}] },
+  { id: 'p4', name: 'Luxe Wall Jewellery', slug:'luxe-wall-jewellery', category:'Decor', subcategory:'Wall', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', description:'Artistic wall jewellery.', variants:[{name:'Small',price:2999},{name:'Large',price:5999}] },
+  { id: 'p5', name: 'Blue Chocolate Box', slug:'blue-chocolate-box', category:'Gifts', subcategory:'Confection', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', description:'Signature confections.', variants:[{name:'Box A',price:899},{name:'Box B',price:1299}] },
+  { id: 'p6', name: 'Signature Jewelry', slug:'signature-jewelry', category:'Accessories', subcategory:'Jewelry', image:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop', description:'Handmade fashion jewelry.', variants:[{name:'Pair',price:1499}] },
+  { id: 'p7', name: 'Wooden Coffee Table', slug:'wooden-coffee-table', category:'Tables', subcategory:'Coffee Table', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', description:'Solid wood table.', variants:[{name:'Natural',price:7999}] },
+  { id: 'p8', name: 'Minimal Shelf', slug:'minimal-shelf', category:'Storage', subcategory:'Shelf', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', description:'Sleek minimal shelf.', variants:[{name:'1m',price:2499},{name:'2m',price:3999}] },
+  { id: 'p9', name: 'Pressed Glass Lamp', slug:'pressed-glass-lamp', category:'Lighting', subcategory:'Lamp', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', description:'Ambient pressed glass lamp.', variants:[{name:'Warm',price:1999},{name:'Cool',price:1999}] },
+  { id: 'p10', name: 'Handwoven Rug', slug:'handwoven-rug', category:'Floor', subcategory:'Rug', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', description:'Handwoven artisanal rug.', variants:[{name:'2x3',price:4999},{name:'3x5',price:8999}] },
+  { id: 'p11', name: 'Ceramic Vase', slug:'ceramic-vase', category:'Decor', subcategory:'Vase', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', description:'Elegant ceramic vase.', variants:[{name:'Small',price:799},{name:'Large',price:1499}] },
+  { id: 'p12', name: 'Wall Mirror', slug:'wall-mirror', category:'Decor', subcategory:'Mirror', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', description:'Statement wall mirror.', variants:[{name:'Round',price:3499},{name:'Oval',price:3999}] },
+  { id: 'p13', name: 'Plush Throw', slug:'plush-throw', category:'Textiles', subcategory:'Throw', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', description:'Cozy plush throw.', variants:[{name:'Single',price:999},{name:'Set',price:1799}] },
+  { id: 'p14', name: 'Accent Stool', slug:'accent-stool', category:'Seating', subcategory:'Stool', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', description:'Handcrafted stool.', variants:[{name:'Oak',price:2499}] },
+  { id: 'p15', name: 'Dining Set', slug:'dining-set', category:'Dining', subcategory:'Set', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', description:'Modern dining set.', variants:[{name:'4-seater',price:19999},{name:'6-seater',price:24999}] },
+  { id: 'p16', name: 'Outdoor Lantern', slug:'outdoor-lantern', category:'Outdoor', subcategory:'Lighting', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', description:'Weatherproof lantern.', variants:[{name:'Single',price:1299}] },
+  { id: 'p17', name: 'Designer Clock', slug:'designer-clock', category:'Decor', subcategory:'Clock', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', description:'Minimal designer clock.', variants:[{name:'Small',price:899},{name:'Large',price:1299}] },
+  { id: 'p18', name: 'Bath Set', slug:'bath-set', category:'Bathroom', subcategory:'Set', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', description:'Luxury bath accessories.', variants:[{name:'Basic',price:1299},{name:'Premium',price:2299}] },
+  { id: 'p19', name: 'Plant Stand', slug:'plant-stand', category:'Decor', subcategory:'Planter', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', description:'Stylish plant stand.', variants:[{name:'Single',price:999},{name:'Set of 3',price:2599}] },
+  { id: 'p20', name: 'Art Poster', slug:'art-poster', category:'Wall Art', subcategory:'Poster', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', description:'Limited edition art poster.', variants:[{name:'A3',price:499},{name:'A2',price:899}] }
+];
+
+/* -------------------------
+   Helpers: basket localStorage
+   ------------------------- */
+function getBasket(){
+  return JSON.parse(localStorage.getItem('basket')) || [];
+}
+function saveBasket(b){ localStorage.setItem('basket', JSON.stringify(b)); updateBasketCount(); }
+function updateBasketCount(){
+  const c = getBasket().reduce((s,i)=> s + (i.quantity||0), 0);
+  document.getElementById('basketCount').textContent = c;
+}
+
+/* -------------------------
+   Render product cards
+   ------------------------- */
+const grid = document.getElementById('productsGrid');
+const noResults = document.getElementById('noResults');
+
+function createCard(product){
+  const a = document.createElement('a');
+  a.href = `${product.slug}.html`;
+  a.className = 'card';
+  a.setAttribute('role','listitem');
+
+  // build inner
+  const img = document.createElement('img');
+  img.src = product.image;
+  img.alt = product.name;
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+
+  const h4 = document.createElement('h4'); h4.textContent = product.name;
+  const desc = document.createElement('p'); desc.textContent = product.description;
+
+  const row = document.createElement('div'); row.className='row';
+
+  // variant select
+  const variant = document.createElement('select'); variant.className='variant';
+  product.variants.forEach((v,idx)=>{
+    const opt = document.createElement('option');
+    opt.value = v.price;
+    opt.textContent = `${v.name} — ₹${v.price}`;
+    opt.dataset.variantName = v.name;
+    variant.appendChild(opt);
+  });
+
+  // qty
+  const qty = document.createElement('input'); qty.type='number'; qty.min=1; qty.value=1; qty.className='qty'; qty.style.width='72px';
+
+  row.appendChild(variant);
+  row.appendChild(qty);
+
+  // actions container (not part of link)
+  const actions = document.createElement('div');
+  actions.className='actions';
+
+  const visit = document.createElement('a');
+  visit.href = `${product.slug}.html`;
+  visit.className = 'btn visit';
+  visit.textContent = 'Visit';
+
+  // Add to basket button (we attach event but stopPropagation so link isn't triggered)
+  const add = document.createElement('button');
+  add.className = 'btn add';
+  add.textContent = 'Add to basket';
+
+  const like = document.createElement('div');
+  like.className = 'like';
+  like.innerHTML = '♡';
+  like.title = 'Like';
+
+  // we need to prevent the anchor -> link when clicking buttons inside card
+  // so we'll wrap clickable area differently: make anchor only on image+title area. To keep markup simple,
+  // we'll stop propagation on buttons and add them to meta, but still have whole card clickable via keyboard.
+
+  // Append elements
+  meta.appendChild(h4);
+  meta.appendChild(desc);
+  meta.appendChild(row);
+
+  // Put image and meta inside a non-link container, and add Visit link
+  const topContainer = document.createElement('div');
+  topContainer.appendChild(img);
+  topContainer.appendChild(meta);
+
+  // Build card: use a wrapper div so Add/Like don't navigate
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex'; wrapper.style.flexDirection='column';
+  wrapper.appendChild(topContainer);
+
+  actions.appendChild(visit);
+  actions.appendChild(add);
+  actions.appendChild(like);
+
+  wrapper.appendChild(actions);
+
+  // set anchor to wrap just the topContainer (image + meta), but not actions.
+  a.appendChild(topContainer);
+
+  // final container for the card: aCardDiv
+  const aCardDiv = document.createElement('div');
+  aCardDiv.className = 'card'; // same styling
+  aCardDiv.appendChild(a); // clickable top
+  aCardDiv.appendChild(actions); // actions separate
+
+  // Event handlers:
+  add.addEventListener('click', function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    const selectedPrice = parseFloat(variant.value);
+    const variantName = variant.options[variant.selectedIndex].dataset.variantName || variant.options[variant.selectedIndex].text;
+    const q = Math.max(1, parseInt(qty.value,10) || 1);
+    addToBasket({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: selectedPrice,
+      quantity: q,
+      category: product.category,
+      subcategory: product.subcategory,
+      variant: variantName
+    });
+    // feedback
+    add.textContent = 'Added ✓';
+    setTimeout(()=> add.textContent = 'Add to basket', 1200);
+  });
+
+  like.addEventListener('click', function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    like.classList.toggle('liked');
+    if(like.classList.contains('liked')){ like.innerHTML = '♥'; like.style.color = 'crimson'; }
+    else { like.innerHTML = '♡'; like.style.color = 'var(--muted)'; }
+  });
+
+  return aCardDiv;
+}
+
+function renderProducts(list){
+  grid.innerHTML = '';
+  if(!list || list.length === 0){
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+  list.forEach(p => grid.appendChild(createCard(p)));
+}
+
+/* -------------------------
+   Add to basket logic
+   ------------------------- */
+function addToBasket(item){
+  const basket = getBasket();
+  // If same id + variant exists, increase qty
+  const existing = basket.find(b => b.id === item.id && b.variant === item.variant);
+  if(existing){
+    existing.quantity = (existing.quantity || 0) + item.quantity;
+  } else {
+    basket.push(item);
+  }
+  saveBasket(basket);
+}
+
+/* -------------------------
+   Search: Fuse.js setup
+   ------------------------- */
+let fuse = null;
+function setupSearch(products){
+  const options = { keys: ['name','category','subcategory'], threshold: 0.3 };
+  fuse = new Fuse(products, options);
+  const input = document.getElementById('searchInput');
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if(!q) return renderProducts(PRODUCTS);
+    const res = fuse.search(q).map(r => r.item);
+    renderProducts(res);
+  });
+}
+
+/* -------------------------
+   Init
+   ------------------------- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderProducts(PRODUCTS);
+  setupSearch(PRODUCTS);
+  updateBasketCount();
+});
+</script>
+</body>
+</html>
