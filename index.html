@@ -1,11 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Imacx — Shop Unique Home Decor Online</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imacx — Artistic Home Decor & Furniture</title>
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --accent:#9ed9bb;
@@ -16,120 +19,139 @@
   --max-width:1200px;
 }
 *{box-sizing:border-box;}
-body{font-family:"Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased;}
-a{color:var(--accent); text-decoration:none;}
-.container{max-width:var(--max-width); margin:0 auto; padding:0 20px;}
+body{font-family:"Montserrat",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;margin:0;color:var(--dark);background:var(--bg);-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 20px;}
 
 /* Header */
-header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:30; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04);}
+header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:50; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04);}
 .topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px;}
-.brand{display:flex;align-items:center;gap:12px;}
+.brand{display:flex; align-items:center; gap:12px;}
 .brand img{height:48px; width:48px; object-fit:contain;}
-.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px;}
+.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px;}
 nav{display:flex; gap:18px; align-items:center;}
 nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark);}
 nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; color:#fff; font-weight:700;}
 
-/* Hero */
-.hero{
-  position: relative;
-  overflow: visible;
-  background:#faf9f7;
-  padding:40px 0;
-}
-.hero .slides{
-  display:flex;
-  transition: transform 0.8s ease;
-}
-.hero .slide{
-  flex:0 0 100%;
-  min-height:80vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px 0;
-}
-.hero .overlay{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  width:100%;
-  max-width:1200px;
-}
-.hero .left{flex:1 1 auto; min-width:280px; padding:0 12px;}
-.hero .left h2{font-size:38px; font-weight:700; margin-bottom:12px;}
-.hero .left p{font-size:16px; color:var(--muted); margin-bottom:12px;}
+/* 3-dot menu */
+.menu-toggle{cursor:pointer;font-size:28px;}
+#menuContent{display:none; flex-direction:column; position:absolute; top:72px; right:20px; background:#fff; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.12); padding:12px; z-index:60;}
+#menuContent a{padding:8px 12px; margin:4px 0; color:var(--dark); font-weight:600;}
+
+/* HERO */
+.hero{position:relative; overflow:visible; background:#faf9f7; padding:32px 0;}
+.hero .slides{display:flex; transition: transform 0.8s cubic-bezier(.2,.9,.3,1); width:100%;}
+.hero .slide{flex:0 0 100%; min-height:70vh; display:flex; align-items:center; justify-content:center; padding:20px 0;}
+.hero .overlay{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; width:100%; max-width:1200px;}
+.hero .left{flex:1 1 420px; min-width:260px; padding:0 12px;}
+.hero .left h2{font-family:"Playfair Display"; font-size:clamp(28px,4vw,44px); margin:0 0 12px; line-height:1.05;}
+.hero .left p{margin:0 0 14px; color:var(--muted); font-size:clamp(15px,2vw,18px);}
 .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
-.btn{padding:12px 20px; border-radius:8px; font-weight:600; cursor:pointer; border:none; transition:all .3s ease;}
+.btn{padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; border:0; transition:all .22s ease;}
 .btn.primary{background:var(--accent); color:#fff;}
-.btn.ghost{background:transparent; border:2px solid var(--accent); color:var(--accent);}
-.btn:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-.hero .right{flex:1 1 auto; min-width:200px; padding:0 12px;}
-.hero-image{max-width:100%; height:auto; object-fit:contain; border-radius:12px; box-shadow:0 8px 30px rgba(16,16,16,0.12);}
-.dots{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); display:flex; gap:6px; z-index:20;}
-.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.2); cursor:pointer; transition:all .25s ease;}
+.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent);}
+.btn:hover{transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+.hero .right{flex:1 1 360px; display:flex; align-items:center; justify-content:center; min-width:220px; padding:0 12px;}
+.hero-image{width:100%; max-width:520px; height:auto; object-fit:cover; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.08);}
+
+/* dots */
+.dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px; z-index:30;}
+.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:all .18s;}
 .dot.active{background:var(--accent);}
 
 /* Sections */
 .section{padding:48px 0;}
-.section h3{font-size:28px; margin-bottom:16px; font-family:"Playfair Display";}
+.section h3{font-size:28px; margin:0 0 10px; font-family:"Playfair Display";}
 .grid{display:grid; gap:20px;}
 .features{grid-template-columns:repeat(3,1fr);}
-.card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; gap:10px; transition:all .3s ease;}
+.card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); min-height:150px; display:flex; flex-direction:column; gap:10px; transition:all .25s;}
 .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08);}
-.card h4{margin:0; font-size:20px; font-weight:700;}
-.card p{margin:0; color:var(--muted); font-size:15px;}
+.card h4{margin:0; font-size:18px;}
+.card p{margin:0; color:var(--muted);}
+.card a{margin-top:auto; color:var(--accent); font-weight:600;}
 
-/* Product grid */
-.products-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px;}
-.product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; justify-content:space-between; transition:all .3s ease;}
-.product:hover{transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.08);}
-.product img{width:100%; height:160px; object-fit:cover;}
+/* Products */
+.products-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
+.product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; justify-content:space-between; transition:all .25s;}
+.product img{width:100%; height:180px; object-fit:cover; display:block;}
 .product .meta{padding:12px;}
-.product .meta h5{margin:0 0 6px; font-size:17px; font-weight:600;}
-.product .meta p{margin:0; color:var(--muted); font-size:14px;}
+.product .meta h5{margin:0 0 6px; font-size:16px;}
+.product .meta p{margin:0; color:var(--muted);}
 
-/* Welcome section */
-.welcome{display:flex; gap:40px; align-items:flex-start;}
-.welcome .text{flex:1;}
-.welcome .side{width:320px; background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 20px rgba(12,12,12,0.04);}
-.welcome h3{font-size:26px; margin-bottom:12px;}
+/* Vision & Big News */
+.vision,.news{background:#fff; padding:32px; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.06); margin-bottom:32px;}
+.vision p,.news p{color:var(--muted); line-height:1.5;}
 
-/* Contact section */
-.contact{display:flex; gap:40px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;}
-.contact h4{margin-bottom:6px;}
-.vip{display:flex; gap:8px; align-items:center;}
-.vip input[type="email"]{padding:12px; border-radius:8px; border:1px solid #e6e6e6; min-width:220px;}
-.vip button{padding:12px 14px; border-radius:8px; border:0; background:var(--dark); color:#fff; cursor:pointer;}
+/* FAQ */
+.faq-item{border-bottom:1px solid #eee; padding:12px 0; cursor:pointer;}
+.faq-question{display:flex; justify-content:space-between; align-items:center; font-weight:600;}
+.faq-answer{max-height:0; overflow:hidden; transition:max-height .3s ease; color:var(--muted); margin-top:6px;}
+.faq-item.active .faq-answer{max-height:200px;}
 
-/* Footer & Cookie */
+/* Footer */
 footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04);}
+
+/* Cookie */
 .cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px;}
 .cookie p{margin:0; color:var(--muted);}
-.cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700; cursor:pointer;}
-
-/* Reveal animations */
-.reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
-.reveal.show{opacity:1; transform:translateY(0);}
+.cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700;}
 
 /* Responsive */
+@media(max-width:900px){.hero .overlay{flex-direction:column;align-items:flex-start}.hero .right{display:none}.features{grid-template-columns:1fr}.topbar{padding:0 14px}.brand h1{font-size:18px}.grid{gap:12px;}}
+@media(max-width:600px){.product img{height:160px}.hero{padding:20px 0}.hero .left h2{font-size:26px}.section{padding:28px 12px;}}
+
+/* Contact Us Section */
+#contact-us {
+  padding: 48px 0;
+  background: #faf9f7;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.contact-item {
+  flex: 1 1 220px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(12,12,12,0.04);
+  transition: all 0.25s;
+}
+
+.contact-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(12,12,12,0.08);
+}
+
+.contact-item h4 {
+  margin: 0 0 8px;
+  font-family: "Playfair Display";
+  font-size: 18px;
+}
+
+.contact-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 @media(max-width:900px){
-  .hero .overlay{flex-direction:column;}
-  .hero .right{display:none;}
-  .features{grid-template-columns:1fr;}
-  .welcome{flex-direction:column;}
-  nav{display:none;}
-  .topbar{padding:0 14px;}
-  .brand h1{font-size:18px;}
+  .contact-info {
+    flex-direction: column;
+  }
 }
-@media(max-width:600px){
-  .products-grid{grid-template-columns:1fr !important;}
-}
+
+
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
   <div class="topbar container">
     <div class="brand">
@@ -139,15 +161,21 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
         <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
       </div>
     </div>
-    <nav aria-label="Main navigation">
-      <a href="#explore">Explore Imacx Now</a>
-      <a href="#featured">Featured Products</a>
-      <a href="#contact">Contact</a>
-      <a href="#vip" class="primary">Join VIP</a>
-    </nav>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="basket.html" class="btn ghost">Basket</a>
+      <a href="shop.html" class="btn primary">Shop</a>
+      <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
+      <div id="menuContent" aria-hidden="true">
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="returns.html">Returns & Refunds</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <div class="slides" id="slides">
     <div class="slide">
@@ -156,42 +184,23 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
           <h2>Shop Unique Home Decor Online</h2>
           <p>Transform your space with our exclusive designs and quality products.</p>
           <div class="cta-row">
-            <button class="btn primary" onclick="scrollToSection('#featured')">Explore Our Collection</button>
-            <button class="btn ghost" onclick="openSignup()">Join Our VIP List</button>
+            <a class="btn primary" href="#featured">Explore Our Collection</a>
           </div>
-      </div>
-      <div class="right">
-        <img class="hero-image" src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="Decor sample">
+        </div>
+        <div class="right">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="Decor sample">
+        </div>
       </div>
     </div>
-    </div>
-    <!-- Additional slides can be duplicated here following same structure -->
   </div>
   <div class="dots" id="dots"></div>
 </section>
 
-<!-- Explore / Features -->
-<section id="explore" class="section container">
-  <div class="reveal">
-    <h3>Explore Imacx Now</h3>
-    <div style="height:8px"></div>
-    <div class="grid features">
-      <div class="card">
-        <h4>Our Vision</h4>
-        <p>At Imacx, we believe in turning dreams into reality. Our vision is to create innovative products that enhance everyday life.</p>
-        <a href="#vision">Discover Our Vision</a>
-      </div>
-      <div class="card">
-        <h4>Fast Delivery</h4>
-        <p>We understand the importance of timely delivery. At Imacx, we work with reliable shipping partners to ensure your orders arrive quickly and safely.</p>
-        <a href="#track">Track Order</a>
-      </div>
-      <div class="card">
-        <h4>Premium Quality</h4>
-        <p>Discover our hand-selected collection that balances craft, comfort and longevity — curated for a sophisticated aesthetic.</p>
-        <a href="#featured">Explore Collection</a>
-      </div>
-    </div>
+<!-- Vision Section -->
+<section class="section container">
+  <div class="vision reveal">
+    <h3>Our Vision — The White Dream</h3>
+    <p>Imacx creates artistic, comfortable, and luxurious home arts and furniture. Every piece is designed with care, blending aesthetics with comfort. More unique collections are coming soon.</p>
   </div>
 </section>
 
@@ -200,105 +209,85 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   <div class="reveal">
     <h3>Featured Products</h3>
     <div style="height:12px"></div>
-    <p style="color:var(--muted)">Explore our stunning collection of delights</p>
+    <p style="color:var(--muted)">Explore our curated collection</p>
     <div class="grid products-grid">
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop" alt="product 1">
+      
+      <a href="imacx-iconic-chair.html" class="product">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop" alt="Imacx Iconic Chair">
         <div class="meta">
           <h5>Imacx Iconic Chair</h5>
           <p>Luxury, handcrafted — perfect statement piece.</p>
         </div>
-      </div>
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop" alt="product 2">
+      </a>
+
+      <a href="silk-comfort-pillow.html" class="product">
+        <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop" alt="Silk Comfort Pillow">
         <div class="meta">
           <h5>Silk Comfort Pillow</h5>
-          <p>Comfort meets style — 3 meter giant pillow available.</p>
+          <p>Comfort meets style — giant pillow available.</p>
         </div>
-      </div>
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="product 3">
+      </a>
+
+      <a href="fur-bean-bed.html" class="product">
+        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="Fur Bean Bed">
         <div class="meta">
           <h5>Fur Bean Bed</h5>
           <p>Sumptuous and cozy, a unique lounge experience.</p>
         </div>
-      </div>
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop" alt="product 4">
-        <div class="meta">
-          <h5>Luxe Wall Jewelry</h5>
-          <p>Large decorative wall piece using pearls and wire.</p>
-        </div>
-      </div>
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop" alt="product 5">
-        <div class="meta">
-          <h5>Blue Chocolate Box</h5>
-          <p>Signature confections — perfect gift idea.</p>
-        </div>
-      </div>
-      <div class="product">
-        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop" alt="product 6">
-        <div class="meta">
-          <h5>Signature Jewelry</h5>
-          <p>Handmade fashion jewelry for a high-class look.</p>
-        </div>
-      </div>
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- Welcome Section -->
+<!-- Big News Section -->
 <section class="section container">
-  <div class="welcome reveal">
-    <div class="text">
-      <h3>Welcome</h3>
-      <p>There's much to see here. Take your time, look around, and learn all there is to know about us. We hope you enjoy our site and take a moment to drop us a line.</p>
-      <div style="margin-top:18px">
-        <a class="btn primary" href="#contact">Find out more</a>
-      </div>
-    </div>
-    <aside class="side">
-      <h4>Site Content</h4>
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:10px 0 16px">
-      <ul style="padding-left:18px; margin:0; color:var(--muted)">
-        <li>Detail your services</li>
-        <li>Announce coming events</li>
-        <li>Display real testimonials</li>
-        <li>Promote current deals</li>
-        <li>Share the big news</li>
-        <li>Display FAQs</li>
-      </ul>
-    </aside>
+  <div class="news reveal">
+    <h3>Big News</h3>
+    <p>Imacx now creates exquisite wall jewellery! Designed to transform walls into luxurious displays of art. More creative products will be launched soon.</p>
   </div>
 </section>
 
-<!-- Contact / VIP Section -->
-<section id="contact" class="section container">
-  <div class="reveal">
-    <h3>Contact Us</h3>
-    <div style="height:12px"></div>
-    <div class="contact">
-      <div>
-        <h4>Get in touch!</h4>
-        <p>Looking for something special? Have a question? Let us know, and we'll get back to you soon.</p>
-        <p style="margin-top:12px"><strong>Imacx</strong><br>8452939172</p>
-        <p><strong>Hours</strong><br>Open today<br>09:00 am – 05:00 pm</p>
-      </div>
-      <div style="min-width:260px">
-        <h4>Join Our VIP List</h4>
-        <p style="color:var(--muted)">Email</p>
-        <div class="vip">
-          <input id="vipEmail" type="email" placeholder="you@email.com" aria-label="email">
-          <button onclick="submitVIP()">Sign up</button>
-        </div>
-        <div id="vipMsg" style="margin-top:8px;color:green;display:none">Thanks — you've been added to the VIP list!</div>
-      </div>
+<!-- FAQ Section -->
+<section class="section container">
+  <h3>FAQs</h3>
+  <div class="faq reveal">
+    <div class="faq-item">
+      <div class="faq-question">What is Imacx?<span>+</span></div>
+      <div class="faq-answer">Imacx is a premium artistic home decor and furniture brand focused on comfort and aesthetics.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Where do you ship?<span>+</span></div>
+      <div class="faq-answer">We ship across India with reliable partners ensuring safe delivery.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I customize my order?<span>+</span></div>
+      <div class="faq-answer">Yes! Contact us to discuss custom designs and bespoke options.</div>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- Contact Us Section -->
+<section id="contact-us" class="section container reveal">
+  <h3>Contact Us</h3>
+  <div style="height:12px"></div>
+  <div class="contact-info">
+    <div class="contact-item">
+      <h4>Phone</h4>
+      <p>+91 8452939172</p>
+    </div>
+    <div class="contact-item">
+      <h4>Email</h4>
+      <p>macxyy12@gmail.com</p>
+    </div>
+    <div class="contact-item">
+      <h4>Timings</h4>
+      <p>Monday - Friday: 09:00 am – 05:00 pm<br>Saturday: 10:00 am – 03:00 pm</p>
+    </div>
+  </div>
+</section>
+  
+  <!-- Footer -->
 <footer class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
     <div style="font-weight:600">Copyright © 2025 Imacx - All Rights Reserved.</div>
@@ -306,106 +295,60 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   </div>
 </footer>
 
-<!-- Cookie Consent -->
+<!-- Cookie -->
 <div class="cookie" id="cookieBar" role="dialog" aria-live="polite">
-  <p>We use cookies to analyze website traffic and optimize your website experience. By accepting our use of cookies, your data will be aggregated with all other user data.</p>
-  <div style="display:flex; gap:8px; align-items:center">
-    <button onclick="acceptCookies()">Accept</button>
-  </div>
-</div>
-
-<!-- Signup Modal -->
-<div id="signupModal" style="position:fixed; left:0; top:0; right:0; bottom:0; display:none; align-items:center; justify-content:center; z-index:80; background:rgba(0,0,0,0.45)">
-  <div style="background:#fff; padding:20px; border-radius:10px; width:92%; max-width:520px; box-shadow:0 30px 80px rgba(0,0,0,0.3)">
-    <h3 style="margin-top:0">Join Our VIP List</h3>
-    <p style="color:var(--muted)">Sign up to get updates, new product notifications, and exclusive offers.</p>
-    <div style="display:flex; gap:8px; margin-top:10px">
-      <input id="modalEmail" type="email" placeholder="you@email.com" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee">
-      <button class="btn primary" onclick="submitModal()">Sign up</button>
-    </div>
-    <div style="text-align:right; margin-top:12px">
-      <button onclick="closeSignup()" style="background:none; border:0; color:var(--muted); cursor:pointer;">Close</button>
-    </div>
-  </div>
+  <p>We use cookies to analyze website traffic and optimize your website experience.</p>
+  <button onclick="acceptCookies()">Accept</button>
 </div>
 
 <script>
-  // Slide Show
-  const slides = document.getElementById('slides');
-  const dotsWrap = document.getElementById('dots');
-  const slideCount = slides.children.length;
-  let index = 0;
+/* Hero Slides */
+const slidesEl = document.getElementById('slides');
+const dotsWrap = document.getElementById('dots');
+let slideIndex=0;
+function createDots(){dotsWrap.innerHTML='';for(let i=0;i<slidesEl.children.length;i++){let d=document.createElement('div');d.className='dot';d.addEventListener('click',()=>goToSlide(i));dotsWrap.appendChild(d);}dotsWrap.children[0].classList.add('active');}
+function refreshDots(){Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===slideIndex));}
+function goToSlide(i){slideIndex=i;slidesEl.style.transform=`translateX(-${i*100}%)`;refreshDots();}
+createDots();
+setInterval(()=>{slideIndex=(slideIndex+1)%slidesEl.children.length;goToSlide(slideIndex);},6000);
 
-  function createDots(){
-    for(let i=0;i<slideCount;i++){
-      const d = document.createElement('div');
-      d.className='dot';
-      d.addEventListener('click',()=>{goTo(i)});
-      dotsWrap.appendChild(d);
+/* 3-dot menu */
+function toggleMenu(){const menu=document.getElementById('menuContent');menu.style.display=menu.style.display==='flex'?'none':'flex';menu.setAttribute('aria-hidden',menu.style.display==='flex'?'false':'true');}
+
+/* Cookie */
+function acceptCookies(){document.getElementById('cookieBar').style.display='none';localStorage.setItem('imacxCookieAccepted','true');}
+if(localStorage.getItem('imacxCookieAccepted')==='true'){document.getElementById('cookieBar').style.display='none';}
+
+/* Scroll reveal */
+const reveals=document.querySelectorAll('.reveal');
+function revealOnScroll(){const windowHeight=window.innerHeight;reveals.forEach(el=>{const top=el.getBoundingClientRect().top;if(top<windowHeight-50){el.classList.add('show');}});}
+window.addEventListener('scroll',revealOnScroll);
+window.addEventListener('load',revealOnScroll);
+
+/* FAQ open/close */
+const faqItems=document.querySelectorAll('.faq-item');
+faqItems.forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('active');
+    const answer = item.querySelector('.faq-answer');
+    const span = item.querySelector('span');
+    if(item.classList.contains('active')){
+      answer.style.maxHeight = answer.scrollHeight + "px";
+      span.textContent = "-";
+    } else {
+      answer.style.maxHeight = null;
+      span.textContent = "+";
     }
-    dotsWrap.children[0].classList.add('active');
-  }
-  function refreshDots(){
-    Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===index));
-  }
-  function goTo(i){
-    index=i;
-    slides.style.transform=`translateX(-${index*100}%)`;
-    refreshDots();
-  }
-  createDots();
-
-  // Auto Slide every 6s
-  setInterval(()=>{
-    index = (index+1) % slideCount;
-    goTo(index);
-  },6000);
-
-  // Scroll to section
-  function scrollToSection(sel){
-    const el = document.querySelector(sel);
-    if(el) el.scrollIntoView({behavior:'smooth'});
-  }
-
-  // VIP Form
-  function submitVIP(){
-    const email = document.getElementById('vipEmail').value;
-    if(email){ 
-      document.getElementById('vipMsg').style.display='block';
-      document.getElementById('vipEmail').value='';
-    }
-  }
-
-  // Modal
-  function openSignup(){ document.getElementById('signupModal').style.display='flex'; }
-  function closeSignup(){ document.getElementById('signupModal').style.display='none'; }
-  function submitModal(){
-    const email = document.getElementById('modalEmail').value;
-    if(email){
-      alert("Thanks for signing up!");
-      document.getElementById('modalEmail').value='';
-      closeSignup();
-    }
-  }
-
-  // Cookie Consent
-  function acceptCookies(){
-    document.getElementById('cookieBar').style.display='none';
-    localStorage.setItem('cookiesAccepted','true');
-  }
-  if(localStorage.getItem('cookiesAccepted')==='true'){
-    document.getElementById('cookieBar').style.display='none';
-  }
-
-  // Reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  window.addEventListener('scroll',()=>{
-    const trigger = window.innerHeight*0.85;
-    reveals.forEach(el=>{
-      const top = el.getBoundingClientRect().top;
-      if(top < trigger) el.classList.add('show');
-    });
   });
+});
+
+/* Scroll reveal CSS for animation */
+const style = document.createElement('style');
+style.innerHTML = `
+  .reveal {opacity:0; transform:translateY(40px); transition:all 0.8s ease;}
+  .reveal.show {opacity:1; transform:translateY(0);}
+`;
+document.head.appendChild(style);
 </script>
 
 </body>
