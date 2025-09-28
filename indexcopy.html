@@ -6,7 +6,13 @@
 <title>Imacx — Shop Unique Home Decor Online</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-<style>
+<script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.11.0/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("eVITzw1w1s6xtYV_o"); // Replace with your EmailJS Public Key
+  })();
+</script>
+  <style>
 :root{
   --accent:#9ed9bb;
   --dark:#0f1414;
@@ -330,6 +336,28 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 </div>
 
 <script>
+function submitModal(){
+  const email = document.getElementById('modalEmail').value.trim();
+
+  if(email){
+    // Send email via EmailJS
+    emailjs.send("service_73hsuni", "template_q1namwn", {
+      user_email: email
+    })
+    .then(function(response) {
+       alert("Thanks for signing up! We’ve added you to VIP.");
+       document.getElementById('modalEmail').value='';
+       closeSignup();
+    }, function(error) {
+       alert("Signup failed. Please try again.");
+       console.error("EmailJS Error:", error);
+    });
+  } else {
+    alert("Please enter a valid email.");
+  }
+}
+</script>
+  <script>
   // Slide Show
   const slides = document.getElementById('slides');
   const dotsWrap = document.getElementById('dots');
