@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Imacx — Shop Unique Home Decor Online</title>
+<title>Imacx — Artistic Home Decor & Furniture</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,97 +18,87 @@
   --bg:#faf9f7;
   --max-width:1200px;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; color:var(--dark); background:var(--bg); -webkit-font-smoothing:antialiased}
-a{color:var(--accent); text-decoration:none}
-.container{max-width:var(--max-width); margin:0 auto; padding:0 20px}
+*{box-sizing:border-box;}
+body{font-family:"Montserrat",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;margin:0;color:var(--dark);background:var(--bg);-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 20px;}
 
 /* Header */
-header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:40; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04)}
-.topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{height:48px; width:48px; object-fit:contain}
-.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
-nav{display:flex; gap:18px; align-items:center}
-nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark)}
-nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; color:#fff; font-weight:700}
+header{background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); position:sticky; top:0; z-index:50; backdrop-filter: blur(4px); border-bottom:1px solid rgba(0,0,0,0.04);}
+.topbar{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px;}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand img{height:48px; width:48px; object-fit:contain;}
+.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px;}
+nav{display:flex; gap:18px; align-items:center;}
+nav a{padding:8px 10px; border-radius:6px; font-weight:600; color:var(--dark);}
+nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; color:#fff; font-weight:700;}
 
 /* 3-dot menu */
-.menu-container{position:relative}
-.menu-btn{font-size:24px; cursor:pointer; border:none; background:none; color:var(--dark)}
-.menu-content{position:absolute; right:0; top:100%; background:#fff; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.1); display:none; flex-direction:column; min-width:180px}
-.menu-content a{padding:10px 14px; color:var(--dark); font-weight:500; border-bottom:1px solid #eee}
-.menu-content a:last-child{border-bottom:none}
+.menu-toggle{cursor:pointer;font-size:28px;}
+#menuContent{display:none; flex-direction:column; position:absolute; top:72px; right:20px; background:#fff; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.12); padding:12px; z-index:60;}
+#menuContent a{padding:8px 12px; margin:4px 0; color:var(--dark); font-weight:600;}
 
-/* Hero */
-.hero{position: relative; overflow: hidden; background:#faf9f7; padding:32px 0}
-.hero .slides{display:flex; transition: transform 0.8s cubic-bezier(.2,.9,.3,1); width:100%}
-.hero .slide{flex:0 0 100%; min-height:70vh; display:flex; align-items:center; justify-content:center; padding:20px 0}
-.hero .overlay{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; width:100%; max-width:1200px}
-.hero .left{flex:1 1 420px; min-width:260px; padding:0 12px}
-.hero .left h2{font-family:"Playfair Display"; font-size:clamp(28px,4vw,44px); margin:0 0 12px; line-height:1.05}
-.hero .left p{margin:0 0 14px; color:var(--muted); font-size:clamp(15px,2vw,18px)}
-.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
-.btn{padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; border:0; transition:all .22s ease}
-.btn.primary{background:var(--accent); color:#fff}
-.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent)}
-.btn:hover{transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-.hero .right{flex:1 1 360px; display:flex; align-items:center; justify-content:center; min-width:220px}
-.hero-image{width:100%; max-width:520px; height:auto; object-fit:cover; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.08)}
+/* HERO */
+.hero{position:relative; overflow:visible; background:#faf9f7; padding:32px 0;}
+.hero .slides{display:flex; transition: transform 0.8s cubic-bezier(.2,.9,.3,1); width:100%;}
+.hero .slide{flex:0 0 100%; min-height:70vh; display:flex; align-items:center; justify-content:center; padding:20px 0;}
+.hero .overlay{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; width:100%; max-width:1200px;}
+.hero .left{flex:1 1 420px; min-width:260px; padding:0 12px;}
+.hero .left h2{font-family:"Playfair Display"; font-size:clamp(28px,4vw,44px); margin:0 0 12px; line-height:1.05;}
+.hero .left p{margin:0 0 14px; color:var(--muted); font-size:clamp(15px,2vw,18px);}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
+.btn{padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; border:0; transition:all .22s ease;}
+.btn.primary{background:var(--accent); color:#fff;}
+.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent);}
+.btn:hover{transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+.hero .right{flex:1 1 360px; display:flex; align-items:center; justify-content:center; min-width:220px; padding:0 12px;}
+.hero-image{width:100%; max-width:520px; height:auto; object-fit:cover; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.08);}
 
 /* dots */
-.dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px; z-index:30}
-.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:all .18s}
-.dot.active{background:var(--accent)}
+.dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px; z-index:30;}
+.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:all .18s;}
+.dot.active{background:var(--accent);}
 
 /* Sections */
-.section{padding:48px 0}
-.section h3{font-size:28px; margin:0 0 10px; font-family:"Playfair Display"}
-.grid{display:grid; gap:20px}
-.features{grid-template-columns:repeat(3,1fr)}
-.card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); min-height:150px; display:flex; flex-direction:column; gap:10px; transition:all .25s}
-.card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08)}
-.card h4{margin:0; font-size:18px}
-.card p{margin:0; color:var(--muted)}
+.section{padding:48px 0;}
+.section h3{font-size:28px; margin:0 0 10px; font-family:"Playfair Display";}
+.grid{display:grid; gap:20px;}
+.features{grid-template-columns:repeat(3,1fr);}
+.card{background:var(--card); padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(12,12,12,0.04); min-height:150px; display:flex; flex-direction:column; gap:10px; transition:all .25s;}
+.card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(12,12,12,0.08);}
+.card h4{margin:0; font-size:18px;}
+.card p{margin:0; color:var(--muted);}
+.card a{margin-top:auto; color:var(--accent); font-weight:600;}
 
 /* Products */
-.products-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px}
-.product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; justify-content:space-between; transition:all .25s}
-.product img{width:100%; height:180px; object-fit:cover; display:block}
-.product .meta{padding:12px}
-.product .meta h5{margin:0 0 6px; font-size:16px}
-.product .meta p{margin:0; color:var(--muted)}
+.products-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
+.product{background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(12,12,12,0.04); display:flex; flex-direction:column; justify-content:space-between; transition:all .25s;}
+.product img{width:100%; height:180px; object-fit:cover; display:block;}
+.product .meta{padding:12px;}
+.product .meta h5{margin:0 0 6px; font-size:16px;}
+.product .meta p{margin:0; color:var(--muted);}
 
-/* Welcome */
-.welcome{display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap}
-.welcome .text{flex:1}
-.welcome .side{width:320px; background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 20px rgba(12,12,12,0.04)}
+/* Vision & Big News */
+.vision,.news{background:#fff; padding:32px; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.06); margin-bottom:32px;}
+.vision p,.news p{color:var(--muted); line-height:1.5;}
 
-/* Contact */
-.contact{display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+/* FAQ */
+.faq-item{border-bottom:1px solid #eee; padding:12px 0; cursor:pointer;}
+.faq-question{display:flex; justify-content:space-between; align-items:center; font-weight:600;}
+.faq-answer{max-height:0; overflow:hidden; transition:max-height .3s ease; color:var(--muted); margin-top:6px;}
+.faq-item.active .faq-answer{max-height:200px;}
 
-/* Footer & cookie */
-footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)}
-.cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px}
-.cookie p{margin:0; color:var(--muted)}
-.cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700}
+/* Footer */
+footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04);}
 
-/* Reveal */
-.reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
-.reveal.show{opacity:1; transform:translateY(0)}
+/* Cookie */
+.cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+.cookie p{margin:0; color:var(--muted);}
+.cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700;}
 
 /* Responsive */
-@media (max-width:900px){
-  .hero .overlay{flex-direction:column; align-items:flex-start}
-  .hero .right{display:none}
-  .features{grid-template-columns:1fr}
-  nav{display:none}
-}
-@media (max-width:600px){
-  .product img{height:160px}
-  .hero{padding:20px 0}
-  .hero .left h2{font-size:26px}
-}
+@media(max-width:900px){.hero .overlay{flex-direction:column;align-items:flex-start}.hero .right{display:none}.features{grid-template-columns:1fr}.topbar{padding:0 14px}.brand h1{font-size:18px}.grid{gap:12px;}}
+@media(max-width:600px){.product img{height:160px}.hero{padding:20px 0}.hero .left h2{font-size:26px}.section{padding:28px 12px;}}
 </style>
 </head>
 <body>
@@ -123,13 +113,11 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
         <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
       </div>
     </div>
-    <nav aria-label="Main navigation">
-      <a href="shop.html">Shop</a>
-      <a href="basket.html">Basket</a>
-    </nav>
-    <div class="menu-container">
-      <button class="menu-btn" onclick="toggleMenu()">⋮</button>
-      <div class="menu-content" id="menuContent">
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="basket.html" class="btn ghost">Basket</a>
+      <a href="shop.html" class="btn primary">Shop</a>
+      <div class="menu-toggle" onclick="toggleMenu()">⋮</div>
+      <div id="menuContent" aria-hidden="true">
         <a href="terms.html">Terms & Conditions</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="returns.html">Returns & Refunds</a>
@@ -141,15 +129,14 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 
 <!-- HERO -->
 <section class="hero">
-  <div class="slides" id="slides" aria-live="polite">
-    <div class="slide" role="group" aria-label="slide 1">
+  <div class="slides" id="slides">
+    <div class="slide">
       <div class="overlay container">
         <div class="left">
           <h2>Shop Unique Home Decor Online</h2>
           <p>Transform your space with our exclusive designs and quality products.</p>
           <div class="cta-row">
-            <a class="btn primary" href="shop.html">Explore Our Collection</a>
-            <a class="btn ghost" href="basket.html">Basket</a>
+            <a class="btn primary" href="#featured">Explore Our Collection</a>
           </div>
         </div>
         <div class="right">
@@ -157,26 +144,19 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
         </div>
       </div>
     </div>
-    <div class="slide" role="group" aria-label="slide 2">
-      <div class="overlay container">
-        <div class="left">
-          <h2>Designer Pieces For Every Home</h2>
-          <p>Carefully curated items to elevate every corner of your home.</p>
-          <div class="cta-row">
-            <a class="btn primary" href="shop.html">Shop Now</a>
-            <a class="btn ghost" href="basket.html">Basket</a>
-          </div>
-        </div>
-        <div class="right">
-          <img class="hero-image" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="Decor sample 2">
-        </div>
-      </div>
-    </div>
   </div>
-  <div class="dots" id="dots" aria-hidden="false"></div>
+  <div class="dots" id="dots"></div>
 </section>
 
-<!-- Featured -->
+<!-- Vision Section -->
+<section class="section container">
+  <div class="vision reveal">
+    <h3>Our Vision — The White Dream</h3>
+    <p>Imacx creates artistic, comfortable, and luxurious home arts and furniture. Every piece is designed with care, blending aesthetics with comfort. More unique collections are coming soon.</p>
+  </div>
+</section>
+
+<!-- Featured Products -->
 <section id="featured" class="section container">
   <div class="reveal">
     <h3>Featured Products</h3>
@@ -208,43 +188,29 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   </div>
 </section>
 
-<!-- Welcome -->
+<!-- Big News Section -->
 <section class="section container">
-  <div class="welcome reveal">
-    <div class="text">
-      <h3>Welcome</h3>
-      <p>There's much to see here. Take your time, look around, and learn all there is to know about us. We hope you enjoy our site and take a moment to drop us a line.</p>
-      <div style="margin-top:18px">
-        <a class="btn primary" href="about.html">Find out more</a>
-      </div>
-    </div>
-    <aside class="side">
-      <h4>Site Content</h4>
-      <hr style="border:none;border-top:1px solid #f0f0f0;margin:10px 0 16px">
-      <ul style="padding-left:18px; margin:0; color:var(--muted)">
-        <li>Detail your services</li>
-        <li>Announce coming events</li>
-        <li>Display real testimonials</li>
-        <li>Promote current deals</li>
-        <li>Share the big news</li>
-        <li>Display FAQs</li>
-      </ul>
-    </aside>
+  <div class="news reveal">
+    <h3>Big News</h3>
+    <p>Imacx now creates exquisite wall jewellery! Designed to transform walls into luxurious displays of art. More creative products will be launched soon.</p>
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact" class="section container">
-  <div class="reveal">
-    <h3>Contact Us</h3>
-    <div style="height:12px"></div>
-    <div class="contact">
-      <div>
-        <h4>Get in touch!</h4>
-        <p>Looking for something special? Have a question? Let us know, and we'll get back to you soon.</p>
-        <p style="margin-top:12px"><strong>Imacx</strong><br>+91 8452939172</p>
-        <p><strong>Hours</strong><br>Open today<br>09:00 am – 05:00 pm</p>
-      </div>
+<!-- FAQ Section -->
+<section class="section container">
+  <h3>FAQs</h3>
+  <div class="faq reveal">
+    <div class="faq-item">
+      <div class="faq-question">What is Imacx?<span>+</span></div>
+      <div class="faq-answer">Imacx is a premium artistic home decor and furniture brand focused on comfort and aesthetics.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Where do you ship?<span>+</span></div>
+      <div class="faq-answer">We ship across India with reliable partners ensuring safe delivery.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I customize my order?<span>+</span></div>
+      <div class="faq-answer">Yes! Contact us to discuss custom designs and bespoke options.</div>
     </div>
   </div>
 </section>
@@ -259,86 +225,58 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 
 <!-- Cookie -->
 <div class="cookie" id="cookieBar" role="dialog" aria-live="polite">
-  <p>We use cookies to analyze website traffic and optimize your website experience. By accepting, we’ll store a cookie on your device.</p>
-  <div style="display:flex; gap:8px; align-items:center">
-    <button onclick="acceptCookies()">Accept</button>
-  </div>
+  <p>We use cookies to analyze website traffic and optimize your website experience.</p>
+  <button onclick="acceptCookies()">Accept</button>
 </div>
 
 <script>
-/* ---------- Slides ---------- */
+/* Hero Slides */
 const slidesEl = document.getElementById('slides');
 const dotsWrap = document.getElementById('dots');
-let slideCount = slidesEl.children.length;
-let slideIndex = 0;
-let slideTimer = null;
-
-function createDots(){
-  dotsWrap.innerHTML = '';
-  for(let i=0;i<slideCount;i++){
-    const d = document.createElement('div');
-    d.className = 'dot';
-    d.setAttribute('role','button');
-    d.setAttribute('aria-label','Go to slide '+(i+1));
-    d.addEventListener('click', ()=> goToSlide(i));
-    dotsWrap.appendChild(d);
-  }
-  if(dotsWrap.children[0]) dotsWrap.children[0].classList.add('active');
-}
-function refreshDots(){
-  Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===slideIndex));
-}
-function goToSlide(i){
-  slideIndex = i;
-  slidesEl.style.transform = `translateX(-${i*100}%)`;
-  refreshDots();
-}
-function startSlides(){
-  stopSlides();
-  slideTimer = setInterval(()=>{
-    slideIndex = (slideIndex + 1) % slideCount;
-    goToSlide(slideIndex);
-  }, 6000);
-}
-function stopSlides(){
-  if(slideTimer) clearInterval(slideTimer);
-}
+let slideIndex=0;
+function createDots(){dotsWrap.innerHTML='';for(let i=0;i<slidesEl.children.length;i++){let d=document.createElement('div');d.className='dot';d.addEventListener('click',()=>goToSlide(i));dotsWrap.appendChild(d);}dotsWrap.children[0].classList.add('active');}
+function refreshDots(){Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===slideIndex));}
+function goToSlide(i){slideIndex=i;slidesEl.style.transform=`translateX(-${i*100}%)`;refreshDots();}
 createDots();
-startSlides();
-slidesEl.addEventListener('mouseenter', stopSlides);
-slidesEl.addEventListener('mouseleave', startSlides);
+setInterval(()=>{slideIndex=(slideIndex+1)%slidesEl.children.length;goToSlide(slideIndex);},6000);
 
-/* ---------- 3-dot menu ---------- */
-function toggleMenu() {
-  const menu = document.getElementById('menuContent');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  menu.setAttribute('aria-hidden', menu.style.display === 'flex' ? 'false' : 'true');
-}
+/* 3-dot menu */
+function toggleMenu(){const menu=document.getElementById('menuContent');menu.style.display=menu.style.display==='flex'?'none':'flex';menu.setAttribute('aria-hidden',menu.style.display==='flex'?'false':'true');}
 
-/* ---------- Cookie ---------- */
-function acceptCookies() {
-  document.getElementById('cookieBar').style.display = 'none';
-  localStorage.setItem('imacxCookieAccepted', 'true');
-}
+/* Cookie */
+function acceptCookies(){document.getElementById('cookieBar').style.display='none';localStorage.setItem('imacxCookieAccepted','true');}
+if(localStorage.getItem('imacxCookieAccepted')==='true'){document.getElementById('cookieBar').style.display='none';}
 
-// Check if cookie was already accepted
-if(localStorage.getItem('imacxCookieAccepted') === 'true'){
-  document.getElementById('cookieBar').style.display = 'none';
-}
+/* Scroll reveal */
+const reveals=document.querySelectorAll('.reveal');
+function revealOnScroll(){const windowHeight=window.innerHeight;reveals.forEach(el=>{const top=el.getBoundingClientRect().top;if(top<windowHeight-50){el.classList.add('show');}});}
+window.addEventListener('scroll',revealOnScroll);
+window.addEventListener('load',revealOnScroll);
 
-/* ---------- Scroll reveal ---------- */
-const revealEls = document.querySelectorAll('.reveal');
-function revealOnScroll() {
-  const windowHeight = window.innerHeight;
-  revealEls.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if(top < windowHeight - 50){
-      el.classList.add('show');
+/* FAQ open/close */
+const faqItems=document.querySelectorAll('.faq-item');
+faqItems.forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('active');
+    const answer = item.querySelector('.faq-answer');
+    const span = item.querySelector('span');
+    if(item.classList.contains('active')){
+      answer.style.maxHeight = answer.scrollHeight + "px";
+      span.textContent = "-";
+    } else {
+      answer.style.maxHeight = null;
+      span.textContent = "+";
     }
   });
-}
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
+});
+
+/* Scroll reveal CSS for animation */
+const style = document.createElement('style');
+style.innerHTML = `
+  .reveal {opacity:0; transform:translateY(40px); transition:all 0.8s ease;}
+  .reveal.show {opacity:1; transform:translateY(0);}
+`;
+document.head.appendChild(style);
 </script>
 
 </body>
