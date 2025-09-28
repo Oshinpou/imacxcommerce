@@ -1,139 +1,341 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shop - imacx</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Imacx — Shop</title>
 
-  <style>
-    body { font-family: 'Cursive', sans-serif; margin:0; background:#fff; color:#333; }
-    header { background:goldenrod; padding:1rem; text-align:center; color:#fff; font-size:1.5rem; }
-    .container { max-width:1200px; margin:2rem auto; padding:0 1rem; }
-    .controls { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:1rem; }
-    input, select { padding:0.5rem; border:1px solid goldenrod; border-radius:4px; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; }
-    .card { border:1px solid #eee; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.05); transition:all 0.3s; background:#fff; }
-    .card:hover { transform:translateY(-5px); box-shadow:0 6px 12px rgba(0,0,0,0.1); }
-    .card img { width:100%; height:180px; object-fit:cover; display:block; }
-    .card h4 { margin:0.5rem; font-size:1rem; color:#222; }
-    .card p { margin:0.5rem; font-size:0.9rem; color:#555; }
-    .card button { margin:0.5rem; padding:0.5rem 1rem; background:goldenrod; border:none; color:#fff; border-radius:4px; cursor:pointer; }
-    .card button:hover { background:#b8860b; }
-  </style>
+<!-- Fonts (match Imacx) -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Fuse for search -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+
+<style>
+  :root{
+    --accent:#9ed9bb;
+    --dark:#0f1414;
+    --muted:#6b6b6b;
+    --card:#ffffff;
+    --bg:#faf9f7;
+    --max-width:1200px;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin:0; color:var(--dark); background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none}
+
+  /* Container */
+  .container{max-width:var(--max-width); margin:0 auto; padding:20px}
+
+  /* Header (styled like Imacx homepage) */
+  header{
+    background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+    position:sticky; top:0; z-index:60; backdrop-filter: blur(4px);
+    border-bottom:1px solid rgba(0,0,0,0.04);
+  }
+  .topbar{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--max-width);margin:0 auto;padding:0 20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:48px;width:48px;object-fit:contain}
+  .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
+  nav{display:flex;gap:16px;align-items:center}
+  nav a{padding:6px 8px;border-radius:6px;font-weight:600;color:var(--dark)}
+  nav a.primary{background:var(--accent); color:#fff; padding:8px 12px;border-radius:20px;font-weight:700}
+
+  /* Controls (search/filter/sort) */
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:18px 20px;background:transparent;justify-content:space-between}
+  .controls-left{display:flex;gap:12px;align-items:center}
+  .search {
+    padding:10px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);min-width:260px;background:#fff;
+    box-shadow:0 6px 20px rgba(16,16,16,0.02);
+  }
+  .filters{display:flex;gap:10px;align-items:center}
+  select.filter, select.sort {
+    padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:#fff; min-width:160px;
+  }
+  .basket-link{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;
+    box-shadow:0 8px 20px rgba(16,16,16,0.06);
+  }
+  .badge{background:#fff;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:700;font-size:13px}
+
+  /* Products grid (keep Imacx card style) */
+  .products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    padding:20px;
+  }
+  .product-card{
+    background:var(--card);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 12px 30px rgba(12,12,12,0.04);
+    display:flex;flex-direction:column;transition:transform .22s, box-shadow .22s;
+  }
+  .product-card:hover{transform:translateY(-6px); box-shadow:0 22px 60px rgba(12,12,12,0.08)}
+  .product-thumb{width:100%;height:180px;object-fit:cover;display:block}
+  .meta{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .meta h5{margin:0;font-size:16px}
+  .meta p{margin:0;color:var(--muted);font-size:14px}
+  .card-actions{display:flex;gap:8px;padding:12px;border-top:1px solid #f4f4f4;background:linear-gradient(180deg,#fff,#fbfbfb)}
+  .btn{padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+  .btn.add{background:var(--accent);color:#fff}
+  .btn.visit{background:transparent;border:1px solid rgba(0,0,0,0.06)}
+  .like{margin-left:auto;align-self:center;font-size:18px;color:var(--muted);cursor:pointer}
+
+  /* Empty state */
+  .empty{padding:36px;text-align:center;color:var(--muted)}
+
+  /* Responsive tweaks */
+  @media (max-width:900px){
+    .topbar{padding:0 14px}
+    .search{min-width:160px}
+    .filters{flex:1;justify-content:flex-end}
+  }
+</style>
 </head>
 <body>
-  <header>🛍️ Imacx Shop</header>
-  <div class="container">
 
-    <!-- Controls -->
-    <div class="controls">
-      <input type="text" id="searchBox" placeholder="Search products...">
-      <select id="categoryFilter">
-        <option value="">All Categories</option>
-      </select>
-      <select id="sortBy">
-        <option value="">Sort By</option>
-        <option value="priceHigh">Price: High → Low</option>
-        <option value="priceLow">Price: Low → High</option>
-        <option value="az">Alphabetical (A → Z)</option>
-      </select>
+<header>
+  <div class="topbar container">
+    <div class="brand">
+      <img src="https://img1.wsimg.com/isteam/ip/0f396d5e-e6a9-49d8-98cc-996f063b2f98/icon.png" alt="Imacx logo">
+      <div>
+        <h1>Imacx</h1>
+        <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
+      </div>
     </div>
 
-    <!-- Product Grid -->
-    <div id="productsGrid" class="grid"></div>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="primary">Shop</a>
+      <a href="basketone.html" id="basketLink" class="basket-link">Basket <span id="basketCount" class="badge">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:12px;">
+
+  <!-- controls -->
+  <div class="controls" role="region" aria-label="Shop controls">
+    <div class="controls-left">
+      <input id="searchInput" class="search" placeholder="Search products by name, category...">
+      <div class="filters" aria-hidden="false">
+        <select id="categoryFilter" class="filter" aria-label="Filter category">
+          <option value="">All categories</option>
+        </select>
+        <select id="sortSelect" class="sort" aria-label="Sort products">
+          <option value="">Sort —</option>
+          <option value="priceHigh">Price: High → Low</option>
+          <option value="priceLow">Price: Low → High</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <a href="basketone.html" class="basket-link">View Basket <span id="basketCountTop" class="badge">0</span></a>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
-  <script>
-    // Product List (20 softcoded)
-    const products = [
-      {name:"Imacx Iconic Chair", price:12000, category:"Furniture", image:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80", link:"imacx-iconic-chair.html"},
-      {name:"Silk Comfort Pillow", price:5000, category:"Bedding", image:"https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80", link:"silk-comfort-pillow.html"},
-      {name:"Fur Bean Bed", price:15000, category:"Furniture", image:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80", link:"fur-bean-bed.html"},
-      {name:"Blue Chocolate Box", price:2000, category:"Food", image:"https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?q=80", link:"blue-chocolate.html"},
-      {name:"Artistic Wall Jewellery", price:25000, category:"Decor", image:"https://images.unsplash.com/photo-1616628182507-7b4f7c4f2f3c?q=80", link:"wall-jewellery.html"},
-      {name:"Luxury Sofa", price:35000, category:"Furniture", image:"https://images.unsplash.com/photo-1582582424700-6f61c07a9d65?q=80", link:"luxury-sofa.html"},
-      {name:"Handmade Rug", price:12000, category:"Decor", image:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80", link:"handmade-rug.html"},
-      {name:"Imacx Skin Cream", price:4000, category:"Cosmetics", image:"https://images.unsplash.com/photo-1585238341986-79c6b2a8b15e?q=80", link:"skin-cream.html"},
-      {name:"Subtle Look Enhancer", price:3500, category:"Cosmetics", image:"https://images.unsplash.com/photo-1596464716120-8b20a03a06c1?q=80", link:"look-enhancer.html"},
-      {name:"Luxury Dining Table", price:55000, category:"Furniture", image:"https://images.unsplash.com/photo-1582582424700-6f61c07a9d65?q=80", link:"dining-table.html"},
-      {name:"Art Sculpture", price:18000, category:"Decor", image:"https://images.unsplash.com/photo-1549887534-1fafe7c0f3c1?q=80", link:"art-sculpture.html"},
-      {name:"Perfume Luxe", price:7000, category:"Cosmetics", image:"https://images.unsplash.com/photo-1505575972945-d58745f6535d?q=80", link:"perfume-luxe.html"},
-      {name:"Velvet Curtains", price:6000, category:"Decor", image:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80", link:"velvet-curtains.html"},
-      {name:"Jewellery Box", price:3000, category:"Accessories", image:"https://images.unsplash.com/photo-1575311373938-5a6e2f65b2ef?q=80", link:"jewellery-box.html"},
-      {name:"Imacx Fashion Ring", price:8000, category:"Accessories", image:"https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80", link:"fashion-ring.html"},
-      {name:"Luxury Watch", price:45000, category:"Accessories", image:"https://images.unsplash.com/photo-1507682226856-48b9f9bf77d5?q=80", link:"luxury-watch.html"},
-      {name:"Imacx Hydra Serum", price:5000, category:"Cosmetics", image:"https://images.unsplash.com/photo-1505575972945-d58745f6535d?q=80", link:"hydra-serum.html"},
-      {name:"Fur Blanket", price:7000, category:"Bedding", image:"https://images.unsplash.com/photo-1616628182507-7b4f7c4f2f3c?q=80", link:"fur-blanket.html"},
-      {name:"Wall Mirror Gold", price:15000, category:"Decor", image:"https://images.unsplash.com/photo-1582582424700-6f61c07a9d65?q=80", link:"wall-mirror.html"},
-      {name:"Iconic Bed Frame", price:40000, category:"Furniture", image:"https://images.unsplash.com/photo-1582582424700-6f61c07a9d65?q=80", link:"bed-frame.html"}
-    ];
+  <!-- products -->
+  <section id="productsSection" aria-label="Products">
+    <div id="productsGrid" class="products-grid" role="list"></div>
+    <div id="noResults" class="empty" style="display:none">No products found.</div>
+  </section>
+</main>
 
-    const basketKey = "basket";
+<script>
+/* ============================
+   Soft-coded product data (20)
+   ============================ */
+const PRODUCTS = [
+  { id:'p1', name: 'Imacx Iconic Chair', slug:'imacx-iconic-chair', category:'Furniture', subcategory:'Chair', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', price:12000, description:'Luxury handcrafted chair.' },
+  { id:'p2', name: 'Silk Comfort Pillow', slug:'silk-comfort-pillow', category:'Bedding', subcategory:'Pillow', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', price:5000, description:'Soft silk pillow.' },
+  { id:'p3', name: 'Fur Bean Bed', slug:'fur-bean-bed', category:'Furniture', subcategory:'Bean Bag', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', price:15000, description:'Sumptuous fur bean bed.' },
+  { id:'p4', name: 'Luxe Wall Jewellery', slug:'luxe-wall-jewellery', category:'Decor', subcategory:'Wall', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', price:5400, description:'Artistic wall jewellery.' },
+  { id:'p5', name: 'Blue Chocolate Box', slug:'blue-chocolate-box', category:'Gifts', subcategory:'Confection', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', price:2000, description:'Signature confections.' },
+  { id:'p6', name: 'Signature Jewelry', slug:'signature-jewelry', category:'Accessories', subcategory:'Jewelry', image:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop', price:1499, description:'Handmade fashion jewelry.' },
+  { id:'p7', name: 'Wooden Coffee Table', slug:'wooden-coffee-table', category:'Tables', subcategory:'Coffee Table', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', price:7999, description:'Solid wood table.' },
+  { id:'p8', name: 'Minimal Shelf', slug:'minimal-shelf', category:'Storage', subcategory:'Shelf', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', price:2499, description:'Sleek minimal shelf.' },
+  { id:'p9', name: 'Pressed Glass Lamp', slug:'pressed-glass-lamp', category:'Lighting', subcategory:'Lamp', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', price:1999, description:'Ambient pressed glass lamp.' },
+  { id:'p10', name: 'Handwoven Rug', slug:'handwoven-rug', category:'Decor', subcategory:'Rug', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', price:4999, description:'Handwoven artisanal rug.' },
+  { id:'p11', name: 'Ceramic Vase', slug:'ceramic-vase', category:'Decor', subcategory:'Vase', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', price:799, description:'Elegant ceramic vase.' },
+  { id:'p12', name: 'Wall Mirror', slug:'wall-mirror', category:'Decor', subcategory:'Mirror', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', price:3499, description:'Statement wall mirror.' },
+  { id:'p13', name: 'Plush Throw', slug:'plush-throw', category:'Textiles', subcategory:'Throw', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', price:999, description:'Cozy plush throw.' },
+  { id:'p14', name: 'Accent Stool', slug:'accent-stool', category:'Seating', subcategory:'Stool', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', price:2499, description:'Handcrafted stool.' },
+  { id:'p15', name: 'Dining Set', slug:'dining-set', category:'Dining', subcategory:'Set', image:'https://images.unsplash.com/photo-1505691723518-36a2e7c5a1b6?q=80&w=1200&auto=format&fit=crop', price:19999, description:'Modern dining set.' },
+  { id:'p16', name: 'Outdoor Lantern', slug:'outdoor-lantern', category:'Outdoor', subcategory:'Lighting', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', price:1299, description:'Weatherproof lantern.' },
+  { id:'p17', name: 'Designer Clock', slug:'designer-clock', category:'Decor', subcategory:'Clock', image:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop', price:899, description:'Minimal designer clock.' },
+  { id:'p18', name: 'Bath Set', slug:'bath-set', category:'Bathroom', subcategory:'Set', image:'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop', price:1299, description:'Luxury bath accessories.' },
+  { id:'p19', name: 'Plant Stand', slug:'plant-stand', category:'Decor', subcategory:'Planter', image:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop', price:999, description:'Stylish plant stand.' },
+  { id:'p20', name: 'Art Poster', slug:'art-poster', category:'Wall Art', subcategory:'Poster', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', price:499, description:'Limited edition art poster.' }
+];
 
-    // Load categories into filter
-    const categoryFilter = document.getElementById("categoryFilter");
-    [...new Set(products.map(p=>p.category))].forEach(c=>{
-      const opt = document.createElement("option");
-      opt.value=c; opt.textContent=c;
-      categoryFilter.appendChild(opt);
-    });
+/* ==============
+   Utilities
+   ============== */
+const getBasket = () => JSON.parse(localStorage.getItem('basket')) || [];
+const saveBasket = (b) => localStorage.setItem('basket', JSON.stringify(b));
+function updateBasketCountUI(){
+  const c = getBasket().reduce((s,i)=> s + (i.quantity||0), 0);
+  document.getElementById('basketCount').textContent = c;
+  document.getElementById('basketCountTop').textContent = c;
+}
 
-    // Render products
-    function renderProducts(list){
-      const grid = document.getElementById("productsGrid");
-      grid.innerHTML="";
-      list.forEach(p=>{
-        const card=document.createElement("div");
-        card.className="card";
-        card.innerHTML=`
-          <a href="${p.link}"><img src="${p.image}" alt="${p.name}"></a>
-          <h4>${p.name}</h4>
-          <p>₹${p.price}</p>
-          <button onclick='addToBasket(${JSON.stringify(p).replace(/'/g,"&apos;")})'>Add to Basket</button>
-        `;
-        grid.appendChild(card);
-      });
-    }
+/* ==============
+   Render products
+   ============== */
+const grid = document.getElementById('productsGrid');
+const noResults = document.getElementById('noResults');
 
-    function getBasket(){ return JSON.parse(localStorage.getItem(basketKey))||[]; }
-    function saveBasket(b){ localStorage.setItem(basketKey,JSON.stringify(b)); }
-    function addToBasket(product){
-      const basket=getBasket();
-      const existing=basket.find(i=>i.name===product.name);
-      if(existing){ existing.quantity+=1; }
-      else{ basket.push({...product,quantity:1}); }
-      saveBasket(basket);
-      alert("✅ Added to basket!");
-    }
+function createProductCard(p){
+  // wrapper
+  const card = document.createElement('article');
+  card.className = 'product-card';
+  card.setAttribute('role','listitem');
 
-    // Search
-    document.getElementById("searchBox").addEventListener("input", e=>{
-      const query=e.target.value.trim();
-      if(!query){ return renderProducts(products); }
-      const fuse=new Fuse(products,{keys:["name","category"],threshold:0.3});
-      const results=fuse.search(query).map(r=>r.item);
-      renderProducts(results);
-    });
+  // top link (image + text)
+  const topLink = document.createElement('a');
+  topLink.href = p.slug + '.html';
+  topLink.style.textDecoration = 'none';
+  topLink.style.color = 'inherit';
 
-    // Filter + Sort
-    function applyFilters(){
-      let list=[...products];
-      const cat=categoryFilter.value;
-      const sort=document.getElementById("sortBy").value;
+  const img = document.createElement('img');
+  img.src = p.image;
+  img.alt = p.name;
+  img.className = 'product-thumb';
+  topLink.appendChild(img);
 
-      if(cat) list=list.filter(p=>p.category===cat);
-      if(sort==="priceHigh") list.sort((a,b)=>b.price-a.price);
-      if(sort==="priceLow") list.sort((a,b)=>a.price-b.price);
-      if(sort==="az") list.sort((a,b)=>a.name.localeCompare(b.name));
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const h = document.createElement('h5'); h.textContent = p.name;
+  const desc = document.createElement('p'); desc.textContent = p.description;
+  const price = document.createElement('p'); price.style.fontWeight='700'; price.textContent = '₹' + p.price;
 
-      renderProducts(list);
-    }
-    categoryFilter.addEventListener("change",applyFilters);
-    document.getElementById("sortBy").addEventListener("change",applyFilters);
+  meta.appendChild(h);
+  meta.appendChild(desc);
+  meta.appendChild(price);
 
-    // Init
-    renderProducts(products);
-  </script>
+  topLink.appendChild(meta);
+  card.appendChild(topLink);
+
+  // actions
+  const actions = document.createElement('div'); actions.className = 'card-actions';
+
+  const visit = document.createElement('a');
+  visit.href = p.slug + '.html';
+  visit.className = 'btn visit';
+  visit.textContent = 'Visit';
+
+  const add = document.createElement('button');
+  add.className = 'btn add';
+  add.textContent = 'Add to basket';
+
+  const like = document.createElement('div');
+  like.className = 'like';
+  like.textContent = '♡';
+  like.title = 'Like';
+
+  // add behaviour
+  add.addEventListener('click', (ev)=>{
+    ev.preventDefault(); ev.stopPropagation();
+    addToBasket({ id:p.id, name:p.name, image:p.image, price:p.price, quantity:1, category:p.category, subcategory:p.subcategory, variant:'' });
+    // quick feedback
+    add.textContent = 'Added ✓';
+    setTimeout(()=> add.textContent = 'Add to basket',1000);
+  });
+
+  like.addEventListener('click', (ev)=>{ ev.preventDefault(); ev.stopPropagation(); like.classList.toggle('liked'); like.textContent = like.classList.contains('liked') ? '♥' : '♡'; });
+
+  actions.appendChild(visit);
+  actions.appendChild(add);
+  actions.appendChild(like);
+  card.appendChild(actions);
+
+  return card;
+}
+
+function renderProducts(list){
+  grid.innerHTML = '';
+  if(!list || list.length === 0){
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+  const fragment = document.createDocumentFragment();
+  list.forEach(p => fragment.appendChild(createProductCard(p)));
+  grid.appendChild(fragment);
+}
+
+/* ==============
+   Add to basket
+   ============== */
+function addToBasket(item){
+  const basket = getBasket();
+  const existing = basket.find(i => i.id === item.id && i.variant === (item.variant||''));
+  if(existing){ existing.quantity = (existing.quantity || 0) + item.quantity; }
+  else { basket.push({...item}); }
+  saveBasket(basket);
+  updateBasketCountUI();
+}
+
+/* ==============
+   Search / Filter / Sort
+   ============== */
+let fuse = new Fuse(PRODUCTS, { keys: ['name','category','subcategory'], threshold: 0.3 });
+
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const sortSelect = document.getElementById('sortSelect');
+
+// populate categories
+(function populateCategories(){
+  const cats = [...new Set(PRODUCTS.map(p=>p.category))].sort();
+  cats.forEach(c => {
+    const opt = document.createElement('option'); opt.value = c; opt.textContent = c;
+    categoryFilter.appendChild(opt);
+  });
+})();
+
+function applyAll(){
+  let list = [...PRODUCTS];
+
+  // search
+  const q = searchInput.value.trim();
+  if(q){
+    const res = fuse.search(q).map(r=>r.item);
+    list = res;
+  }
+
+  // filter category
+  const cat = categoryFilter.value;
+  if(cat) list = list.filter(p => p.category === cat);
+
+  // sort
+  const sort = sortSelect.value;
+  if(sort === 'priceHigh') list.sort((a,b)=>b.price - a.price);
+  if(sort === 'priceLow') list.sort((a,b)=>a.price - b.price);
+  if(sort === 'az') list.sort((a,b)=> a.name.localeCompare(b.name));
+
+  renderProducts(list);
+}
+
+// events
+searchInput.addEventListener('input', ()=>{ applyAll(); });
+categoryFilter.addEventListener('change', applyAll);
+sortSelect.addEventListener('change', applyAll);
+
+/* init */
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderProducts(PRODUCTS);
+  updateBasketCountUI();
+});
+</script>
 </body>
 </html>
