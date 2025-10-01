@@ -6,30 +6,166 @@
   <title>imacx Shop</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#222}
-    header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#111;color:#fff;position:sticky;top:0;z-index:1000}
-    header .logo{font-size:22px;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
-    header .right{display:flex;align-items:center;gap:20px}
-    .search-box input{padding:6px 10px;border:none;border-radius:4px}
-    .basket{position:relative;cursor:pointer}
-    .basket span{position:absolute;top:-6px;right:-10px;background:#e60023;color:#fff;font-size:12px;border-radius:50%;padding:2px 6px}
-    .menu-btn{cursor:pointer;font-size:18px}
-    .dropdown{display:none;position:absolute;top:50px;right:20px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);border-radius:6px;overflow:hidden;z-index:2000}
-    .dropdown.show{display:block}
-    .dropdown a{display:block;padding:10px 15px;text-decoration:none;color:#333}
-    .dropdown a:hover{background:#f2f2f2}
-    .filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:15px;background:#fafafa}
-    .filters select{padding:6px 10px;border-radius:4px;border:1px solid #ccc}
-    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:20px}
-    .product-card{background:#fff;border:1px solid #eee;border-radius:8px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
-    .product-card img{width:100%;height:200px;object-fit:cover}
-    .product-card h5{margin:10px 0;font-size:16px}
-    .product-card p{font-size:14px;color:#444;margin:0 0 10px}
-    .buttons{display:flex;gap:8px;margin-bottom:12px}
-    .btn{padding:6px 12px;border:none;border-radius:4px;cursor:pointer;font-size:14px}
-    .btn.view{background:#111;color:#fff}
-    .btn.add{background:#e60023;color:#fff}
-    footer{background:#111;color:#fff;padding:20px;text-align:center;margin-top:30px;font-size:14px}
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #555;
+      --primary: #e60023;
+    }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--text);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header .logo {
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    header .right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .search-box input {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+    }
+    .basket {
+      position: relative;
+      cursor: pointer;
+    }
+    .basket span {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      border-radius: 50%;
+      padding: 2px 6px;
+    }
+    .menu-btn {
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 20px;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      overflow: hidden;
+      z-index: 2000;
+    }
+    .dropdown.show { display: block; }
+    .dropdown a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .dropdown a:hover { background: #f2f2f2; }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 15px;
+      background: #fafafa;
+    }
+    .filters select {
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+
+    /* Products */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 30px 20px;
+    }
+    .product-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .product-card h5 {
+      margin: 12px 0 6px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .product-card p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn.view {
+      background: var(--text);
+      color: #fff;
+    }
+    .btn.add {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--text);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -37,7 +173,10 @@
     <div class="logo">imacx</div>
     <div class="right">
       <div class="search-box"><input type="text" id="searchInput" placeholder="Search..."></div>
-      <div class="basket"><i class="fa fa-shopping-basket"></i><span id="basketCount">0</span></div>
+      <div class="basket" onclick="location.href='basketone.html'">
+        <i class="fa fa-shopping-basket"></i>
+        <span id="basketCount">0</span>
+      </div>
       <div class="menu-btn"><i class="fa fa-ellipsis-v"></i></div>
     </div>
     <div class="dropdown" id="menuDropdown">
@@ -65,9 +204,8 @@
   </div>
 
   <div class="products" id="productsGrid">
-    <!-- Example product cards -->
     <div class="product-card" data-category="cosmetics" data-price="2500">
-      <img src="https://via.placeholder.com/300x200?text=Cosmetic+1" alt="Product">
+      <img src="https://via.placeholder.com/400x220?text=Cosmetic+1" alt="Product">
       <h5>Iconic Face Serum</h5>
       <p>₹2500</p>
       <div class="buttons">
@@ -77,7 +215,7 @@
     </div>
 
     <div class="product-card" data-category="furniture" data-price="15000">
-      <img src="https://via.placeholder.com/300x200?text=Furniture+1" alt="Product">
+      <img src="https://via.placeholder.com/400x220?text=Furniture+1" alt="Product">
       <h5>Luxury Sofa</h5>
       <p>₹15,000</p>
       <div class="buttons">
@@ -87,7 +225,7 @@
     </div>
 
     <div class="product-card" data-category="food" data-price="1200">
-      <img src="https://via.placeholder.com/300x200?text=Food+1" alt="Product">
+      <img src="https://via.placeholder.com/400x220?text=Food+1" alt="Product">
       <h5>Blue Chocolate</h5>
       <p>₹1200</p>
       <div class="buttons">
@@ -97,7 +235,7 @@
     </div>
 
     <div class="product-card" data-category="jewelry" data-price="5000">
-      <img src="https://via.placeholder.com/300x200?text=Jewelry+1" alt="Product">
+      <img src="https://via.placeholder.com/400x220?text=Jewelry+1" alt="Product">
       <h5>Fashion Necklace</h5>
       <p>₹5000</p>
       <div class="buttons">
@@ -112,12 +250,12 @@
   </footer>
 
   <script>
-    // 3-dots menu toggle
+    // menu toggle
     document.querySelector('.menu-btn').addEventListener('click',()=>{
       document.getElementById('menuDropdown').classList.toggle('show');
     });
 
-    // Simple search filter
+    // search
     const searchInput=document.getElementById('searchInput');
     const products=document.querySelectorAll('.product-card');
     searchInput.addEventListener('input',()=>{
@@ -128,7 +266,7 @@
       });
     });
 
-    // Category filter
+    // filter
     document.getElementById('categoryFilter').addEventListener('change',function(){
       const val=this.value;
       products.forEach(p=>{
@@ -136,26 +274,22 @@
       });
     });
 
-    // Sort
+    // sort
     document.getElementById('sortSelect').addEventListener('change',function(){
       const grid=document.getElementById('productsGrid');
       const items=Array.from(products);
-      if(this.value==='priceHigh'){
-        items.sort((a,b)=>b.dataset.price-a.dataset.price);
-      } else if(this.value==='priceLow'){
-        items.sort((a,b)=>a.dataset.price-b.dataset.price);
-      } else if(this.value==='az'){
-        items.sort((a,b)=>a.querySelector('h5').innerText.localeCompare(b.querySelector('h5').innerText));
-      }
+      if(this.value==='priceHigh'){items.sort((a,b)=>b.dataset.price-a.dataset.price);}
+      else if(this.value==='priceLow'){items.sort((a,b)=>a.dataset.price-b.dataset.price);}
+      else if(this.value==='az'){items.sort((a,b)=>a.querySelector('h5').innerText.localeCompare(b.querySelector('h5').innerText));}
       items.forEach(i=>grid.appendChild(i));
     });
 
-    // --- Basket functionality ---
+    // basket
     const basketCount=document.getElementById('basketCount');
-    let basket=JSON.parse(localStorage.getItem('basket')) || [];
+    let basket=JSON.parse(localStorage.getItem('basket'))||[];
     basketCount.textContent=basket.length;
 
-    document.querySelectorAll('.btn.add').forEach((btn)=>{
+    document.querySelectorAll('.btn.add').forEach(btn=>{
       btn.addEventListener('click',()=>{
         const card=btn.closest('.product-card');
         const product={
