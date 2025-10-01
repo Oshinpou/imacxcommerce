@@ -41,17 +41,15 @@ nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; c
 /* HERO */
 .hero {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   background: #faf9f7;
   padding: 32px 0;
 }
-
 .hero .slides {
   display: flex;
   transition: transform 0.8s cubic-bezier(.2,.9,.3,1);
   width: 100%;
 }
-
 .hero .slide {
   flex: 0 0 100%;
   min-height: 70vh;
@@ -60,8 +58,6 @@ nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; c
   justify-content: center;
   padding: 20px 0;
 }
-
-/* Overlay wrapper for text + image */
 .hero .overlay {
   display: flex;
   flex-wrap: wrap;
@@ -71,8 +67,6 @@ nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; c
   max-width: 1200px;
   margin: 0 auto;
 }
-
-/* Left side (text) */
 .hero .left {
   flex: 1 1 420px;
   min-width: 260px;
@@ -89,8 +83,6 @@ nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; c
   color: var(--muted);
   font-size: clamp(15px,2vw,18px);
 }
-
-/* Right side (image) */
 .hero .right {
   flex: 1 1 360px;
   display: flex;
@@ -108,59 +100,29 @@ nav a.primary{background:var(--accent); padding:10px 14px; border-radius:24px; c
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
-/* CTA Buttons */
-.cta-row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-.btn {
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 0;
-  transition: all .22s ease;
-}
-.btn.primary {
-  background: var(--accent);
-  color: #fff;
-}
-.btn.ghost {
-  background: transparent;
-  color: var(--accent);
-  border: 2px solid var(--accent);
-}
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
+/* CTA */
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
+.btn{padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; border:0; transition:all .22s ease;}
+.btn.primary{background:var(--accent); color:#fff;}
+.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent);}
+.btn:hover{transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.08);}
 
-/* Responsive: keep showing image on mobile */
+/* dots */
+.dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px; z-index:30;}
+.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:all .18s;}
+.dot.active{background:var(--accent);}
+
+/* Responsive */
 @media (max-width: 900px) {
   .hero .overlay {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  .hero .left {
-    padding: 0 8px;
-  }
-  .hero .right {
-    display: flex;
-    margin-top: 20px;
-    padding: 0 8px;
-  }
-  .hero-image {
-    max-width: 90%;
-  }
+  .hero .left {padding:0 8px;}
+  .hero .right {margin-top:20px; padding:0 8px;}
+  .hero-image {max-width:90%;}
 }
-
-/* dots */
-.dots{position:absolute; left:50%; transform:translateX(-50%); bottom:18px; display:flex; gap:8px; z-index:30;}
-.dot{width:12px; height:12px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:all .18s;}
-.dot.active{background:var(--accent);}
 
 /* Sections */
 .section{padding:48px 0;}
@@ -198,58 +160,6 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 .cookie{position:fixed; left:20px; right:20px; bottom:20px; z-index:60; background:#fff; padding:14px 18px; border-radius:12px; box-shadow:0 12px 50px rgba(12,12,12,0.12); display:flex; justify-content:space-between; align-items:center; gap:12px;}
 .cookie p{margin:0; color:var(--muted);}
 .cookie button{background:var(--accent); border:0; padding:10px 14px; border-radius:8px; color:#fff; font-weight:700;}
-
-/* Responsive */
-@media(max-width:900px){.hero .overlay{flex-direction:column;align-items:flex-start}.hero .right{display:none}.features{grid-template-columns:1fr}.topbar{padding:0 14px}.brand h1{font-size:18px}.grid{gap:12px;}}
-@media(max-width:600px){.product img{height:160px}.hero{padding:20px 0}.hero .left h2{font-size:26px}.section{padding:28px 12px;}}
-
-/* Contact Us Section */
-#contact-us {
-  padding: 48px 0;
-  background: #faf9f7;
-}
-
-.contact-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  justify-content: space-between;
-}
-
-.contact-item {
-  flex: 1 1 220px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(12,12,12,0.04);
-  transition: all 0.25s;
-}
-
-.contact-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(12,12,12,0.08);
-}
-
-.contact-item h4 {
-  margin: 0 0 8px;
-  font-family: "Playfair Display";
-  font-size: 18px;
-}
-
-.contact-item p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-@media(max-width:900px){
-  .contact-info {
-    flex-direction: column;
-  }
-}
-
-
 </style>
 </head>
 <body>
@@ -295,28 +205,27 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
         </div>
       </div>
     </div>
-   <!-- Second slide -->
-  <div class="slide">
-    <div class="overlay container">
-      <div class="left">
-        <h2>Luxury Furniture Arrivals</h2>
-        <p>Handcrafted with care, built to last a lifetime.</p>
-        <div class="cta-row">
-          <a class="btn primary" href="#featured">Shop Now</a>
+
+    <!-- Second slide -->
+    <div class="slide">
+      <div class="overlay container">
+        <div class="left">
+          <h2>Luxury Furniture Arrivals</h2>
+          <p>Handcrafted with care, built to last a lifetime.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="#featured">Shop Now</a>
+          </div>
+        </div>
+        <div class="right">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1582582422445-d4a46f4d4a34?w=1200&q=80&auto=format&fit=crop" alt="Furniture showcase">
         </div>
       </div>
-      <div class="right">
-        <img class="hero-image" src="https://images.unsplash.com/photo-1582582422445-d4a46f4d4a34?w=1200&q=80&auto=format&fit=crop" alt="Furniture showcase">
-      </div>
     </div>
-  </div>
-</div>
-
   </div>
   <div class="dots" id="dots"></div>
 </section>
 
-<!-- Vision Section -->
+<!-- Vision -->
 <section class="section container">
   <div class="vision reveal">
     <h3>Our Vision — The White Dream</h3>
@@ -328,39 +237,25 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
 <section id="featured" class="section container">
   <div class="reveal">
     <h3>Featured Products</h3>
-    <div style="height:12px"></div>
     <p style="color:var(--muted)">Explore our curated collection</p>
     <div class="grid products-grid">
-      
       <a href="imacx-iconic-chair.html" class="product">
         <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop" alt="Imacx Iconic Chair">
-        <div class="meta">
-          <h5>Imacx Iconic Chair</h5>
-          <p>Luxury, handcrafted — perfect statement piece.</p>
-        </div>
+        <div class="meta"><h5>Imacx Iconic Chair</h5><p>Luxury, handcrafted — perfect statement piece.</p></div>
       </a>
-
       <a href="silk-comfort-pillow.html" class="product">
         <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop" alt="Silk Comfort Pillow">
-        <div class="meta">
-          <h5>Silk Comfort Pillow</h5>
-          <p>Comfort meets style — giant pillow available.</p>
-        </div>
+        <div class="meta"><h5>Silk Comfort Pillow</h5><p>Comfort meets style — giant pillow available.</p></div>
       </a>
-
       <a href="fur-bean-bed.html" class="product">
         <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" alt="Fur Bean Bed">
-        <div class="meta">
-          <h5>Fur Bean Bed</h5>
-          <p>Sumptuous and cozy, a unique lounge experience.</p>
-        </div>
+        <div class="meta"><h5>Fur Bean Bed</h5><p>Sumptuous and cozy, a unique lounge experience.</p></div>
       </a>
-
     </div>
   </div>
 </section>
 
-<!-- Big News Section -->
+<!-- Big News -->
 <section class="section container">
   <div class="news reveal">
     <h3>Big News</h3>
@@ -368,7 +263,7 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   </div>
 </section>
 
-<!-- FAQ Section -->
+<!-- FAQ -->
 <section class="section container">
   <h3>FAQs</h3>
   <div class="faq reveal">
@@ -387,84 +282,110 @@ footer{padding:28px 0; color:var(--muted); border-top:1px solid rgba(0,0,0,0.04)
   </div>
 </section>
 
-<!-- Contact Us Section -->
+<!-- Contact -->
 <section id="contact-us" class="section container reveal">
   <h3>Contact Us</h3>
-  <div style="height:12px"></div>
   <div class="contact-info">
-    <div class="contact-item">
-      <h4>Phone</h4>
-      <p>+91 8452939172</p>
-    </div>
-    <div class="contact-item">
-      <h4>Email</h4>
-      <p>macxyy12@gmail.com</p>
-    </div>
-    <div class="contact-item">
-      <h4>Timings</h4>
-      <p>Monday - Friday: 09:00 am – 05:00 pm<br>Saturday: 10:00 am – 03:00 pm</p>
-    </div>
+    <div class="contact-item"><h4>Phone</h4><p>+91 8452939172</p></div>
+    <div class="contact-item"><h4>Email</h4><p>macxyy12@gmail.com</p></div>
+    <div class="contact-item"><h4>Timings</h4><p>Mon–Fri: 09:00–17:00<br>Sat: 10:00–15:00</p></div>
   </div>
 </section>
-  
-  <!-- Footer -->
+
+<!-- Footer -->
 <footer class="container">
-  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
-    <div style="font-weight:600">Copyright © 2025 Imacx - All Rights Reserved.</div>
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px">
+    <div style="font-weight:600">© 2025 Imacx - All Rights Reserved.</div>
     <div style="color:var(--muted)">Powered by creamer dreamer</div>
   </div>
 </footer>
 
 <!-- Cookie -->
-<div class="cookie" id="cookieBar" role="dialog" aria-live="polite">
+<div class="cookie" id="cookieBar">
   <p>We use cookies to analyze website traffic and optimize your website experience.</p>
   <button onclick="acceptCookies()">Accept</button>
 </div>
 
 <script>
 /* Hero Slides */
-const slidesEl = document.getElementById('slides');
-const dotsWrap = document.getElementById('dots');
+const slidesEl=document.getElementById('slides');
+const dotsWrap=document.getElementById('dots');
 let slideIndex=0;
-function createDots(){dotsWrap.innerHTML='';for(let i=0;i<slidesEl.children.length;i++){let d=document.createElement('div');d.className='dot';d.addEventListener('click',()=>goToSlide(i));dotsWrap.appendChild(d);}dotsWrap.children[0].classList.add('active');}
-function refreshDots(){Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active',i===slideIndex));}
-function goToSlide(i){slideIndex=i;slidesEl.style.transform=`translateX(-${i*100}%)`;refreshDots();}
+function createDots(){
+  dotsWrap.innerHTML='';
+  for(let i=0;i<slidesEl.children.length;i++){
+    let d=document.createElement('div');
+    d.className='dot';
+    d.addEventListener('click',()=>goToSlide(i));
+    dotsWrap.appendChild(d);
+  }
+  dotsWrap.children[0].classList.add('active');
+}
+function refreshDots(){
+  Array.from(dotsWrap.children).forEach((el,i)=>el.classList.toggle('active', i === slideIndex);
+});
+}
+function goToSlide(i){
+  slideIndex=i;
+  slidesEl.style.transform=`translateX(-${i*100}%)`;
+  refreshDots();
+}
 createDots();
-setInterval(()=>{slideIndex=(slideIndex+1)%slidesEl.children.length;goToSlide(slideIndex);},6000);
+setInterval(()=>{
+  slideIndex=(slideIndex+1)%slidesEl.children.length;
+  goToSlide(slideIndex);
+},6000);
 
 /* 3-dot menu */
-function toggleMenu(){const menu=document.getElementById('menuContent');menu.style.display=menu.style.display==='flex'?'none':'flex';menu.setAttribute('aria-hidden',menu.style.display==='flex'?'false':'true');}
+function toggleMenu(){
+  const menu=document.getElementById('menuContent');
+  menu.style.display=menu.style.display==='flex'?'none':'flex';
+  menu.setAttribute('aria-hidden',menu.style.display==='flex'?'false':'true');
+}
 
 /* Cookie */
-function acceptCookies(){document.getElementById('cookieBar').style.display='none';localStorage.setItem('imacxCookieAccepted','true');}
-if(localStorage.getItem('imacxCookieAccepted')==='true'){document.getElementById('cookieBar').style.display='none';}
+function acceptCookies(){
+  document.getElementById('cookieBar').style.display='none';
+  localStorage.setItem('imacxCookieAccepted','true');
+}
+if(localStorage.getItem('imacxCookieAccepted')==='true'){
+  document.getElementById('cookieBar').style.display='none';
+}
 
 /* Scroll reveal */
 const reveals=document.querySelectorAll('.reveal');
-function revealOnScroll(){const windowHeight=window.innerHeight;reveals.forEach(el=>{const top=el.getBoundingClientRect().top;if(top<windowHeight-50){el.classList.add('show');}});}
+function revealOnScroll(){
+  const windowHeight=window.innerHeight;
+  reveals.forEach(el=>{
+    const top=el.getBoundingClientRect().top;
+    if(top<windowHeight-50){
+      el.classList.add('show');
+    }
+  });
+}
 window.addEventListener('scroll',revealOnScroll);
 window.addEventListener('load',revealOnScroll);
 
 /* FAQ open/close */
 const faqItems=document.querySelectorAll('.faq-item');
-faqItems.forEach(item => {
-  item.addEventListener('click', () => {
+faqItems.forEach(item=>{
+  item.addEventListener('click',()=>{
     item.classList.toggle('active');
-    const answer = item.querySelector('.faq-answer');
-    const span = item.querySelector('span');
+    const answer=item.querySelector('.faq-answer');
+    const span=item.querySelector('span');
     if(item.classList.contains('active')){
-      answer.style.maxHeight = answer.scrollHeight + "px";
-      span.textContent = "-";
+      answer.style.maxHeight=answer.scrollHeight+"px";
+      span.textContent="-";
     } else {
-      answer.style.maxHeight = null;
-      span.textContent = "+";
+      answer.style.maxHeight=null;
+      span.textContent="+";
     }
   });
 });
 
 /* Scroll reveal CSS for animation */
-const style = document.createElement('style');
-style.innerHTML = `
+const style=document.createElement('style');
+style.innerHTML=`
   .reveal {opacity:0; transform:translateY(40px); transition:all 0.8s ease;}
   .reveal.show {opacity:1; transform:translateY(0);}
 `;
