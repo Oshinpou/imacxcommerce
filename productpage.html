@@ -55,16 +55,17 @@
     .slider {position:relative; overflow:hidden; border-radius:var(--radius); margin-bottom:20px}
     .slides {display:flex; transition:transform 0.4s ease; width:200%}
     .slide {min-width:100%; display:flex; align-items:center; justify-content:center}
-    .slide img {
+.slide img {
   width: 100%;
-  height: 400px;          /* set desired height */
-  object-fit: cover;      /* crop instead of stretching */
+  height: 400px;          /* adjust height */
+  object-fit: contain;    /* shows full image */
+  background: #fff;       /* background behind smaller images */
   border-radius: var(--radius);
 }
 
 @media (max-width: 768px) {
   .slide img {
-    height: 250px;        /* smaller height for mobile */
+    height: 250px;
   }
 }
     .dots {display:flex; justify-content:center; gap:8px; margin-top:8px}
