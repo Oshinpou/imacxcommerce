@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refunds & Returns — Imacx Shop</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent:#9ed9bb;
+      --dark:#0f1414;
+      --muted:#6b6b6b;
+      --card:#ffffff;
+      --bg:#faf9f7;
+      --max-width:1200px;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      color:var(--dark);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--accent); text-decoration:none}
+
+    /* Header */
+    header{
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter: blur(4px);
+      border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--max-width);margin:0 auto;padding:0 20px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:48px;width:48px;object-fit:contain}
+    .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{padding:8px 10px;border-radius:8px;font-weight:600;color:var(--dark)}
+    nav a.primary{background:var(--accent); color:#fff; padding:8px 14px; border-radius:20px}
+
+    /* Main container */
+    .container{max-width:var(--max-width);margin:18px auto;padding:0 20px}
+    h2{font-family:"Playfair Display"; margin-bottom:12px; font-size:22px}
+    p{margin-bottom:12px; line-height:1.6}
+    ul{margin-bottom:12px; padding-left:20px}
+
+    /* Card style */
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:0 12px 40px rgba(12,12,12,0.06);
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    /* Footer */
+    footer{
+      padding:20px;
+      text-align:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    @media(max-width:900px){
+      .topbar{padding:0 14px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="topbar container">
+    <div class="brand">
+      <img src="icon.png" alt="Imacx logo">
+      <div>
+        <h1>Imacx</h1>
+        <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="basketone.html">Basket</a>
+      <a href="refunds.html" class="primary">Refunds & Returns</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" role="main">
+  <section class="card">
+    <h2>Refunds & Returns Policy</h2>
+    <p>At Imacx, we strive to provide a luxurious and seamless shopping experience. If you are not completely satisfied with your purchase, we have a clear and fair Refunds & Returns policy to ensure your convenience and satisfaction.</p>
+
+    <h3>1. Eligibility for Returns</h3>
+    <p>Products are eligible for return if:</p>
+    <ul>
+      <li>They are unused, unopened, and in the same condition as received.</li>
+      <li>Return request is made within 3 days of delivery.</li>
+      <li>The product does not violate hygiene or safety restrictions.</li>
+    </ul>
+
+    <h3>2. How to Request a Return</h3>
+    <p>To initiate a return, please contact our support team via:</p>
+    <ul>
+      <li>Email: <a href="mailto:macxyy12@gmail.com">macxyy12@gmail.com</a></li>
+      <li>Phone: +91 84529 39172</li>
+    </ul>
+    <p>Provide your order ID and reason for return. Our team will guide you through the return process.</p>
+
+    <h3>3. Refund Process</h3>
+    <p>Once we receive the returned product and confirm its condition, your refund will be processed as follows:</p>
+    <ul>
+      <li>Full refund for products returned in original condition.</li>
+      <li>Refunds will be made to the original payment method used during checkout.</li>
+      <li>The process typically takes 3-5 business days from the date we receive your return.</li>
+    </ul>
+
+    <h3>4. Exchange Policy</h3>
+    <p>Currently, we do not provide direct exchanges. Please return the original item and place a new order for the desired product.</p>
+
+    <h3>5. Damaged or Defective Items</h3>
+    <p>If you receive a damaged or defective product:</p>
+    <ul>
+      <li>Report it immediately within 3 days of receipt.</li>
+      <li>Include photos of the damage along with your order ID.</li>
+      <li>We will provide a replacement or full refund after verification.</li>
+    </ul>
+
+    <h3>6. Non-Returnable Items</h3>
+    <p>Certain items cannot be returned due to hygiene or safety reasons. These include:</p>
+    <ul>
+      <li>Opened cosmetics or skincare products.</li>
+      <li>Personalized or customized products.</li>
+      <li>Gift cards or vouchers.</li>
+    </ul>
+
+    <h3>7. Shipping for Returns</h3>
+    <p>Return shipping is the responsibility of the customer unless the return is due to a defect or mistake by Imacx. Use secure packaging to avoid damage during transit. Imacx is not responsible for items lost during return shipping.</p>
+
+    <h3>8. Cancellations</h3>
+    <p>You may cancel an order within 3 days of purchase if it has not been shipped. Contact our support immediately to process the cancellation and refund.</p>
+
+    <h3>9. Contact Support</h3>
+    <p>For any questions, concerns, or assistance regarding refunds and returns, reach out to us at <a href="mailto:macxyy12@gmail.com">macxyy12@gmail.com</a> or call +91 84529 39172. We aim to respond promptly and resolve your issues efficiently.</p>
+
+    <p>This Refunds & Returns policy ensures transparency and a worry-free shopping experience for all Imacx customers. We value your trust and strive to provide a luxurious, safe, and satisfying purchase experience.</p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Imacx. All rights reserved. Designed for a seamless and luxurious shopping experience.
+</footer>
+
+</body>
+</html>
