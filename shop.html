@@ -9,9 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Fuse for search -->
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
-
 <style>
 :root{
   --accent:#9ed9bb;
@@ -22,184 +19,60 @@
   --max-width:1200px;
   --radius:12px;
 }
-*{box-sizing:border-box;}
+*{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:"Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  margin:0;
   background:var(--bg);
   color:var(--dark);
-  -webkit-font-smoothing:antialiased;
 }
 
 /* Header */
 header{
   background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
-  position:sticky; top:0;
-  z-index:60;
-  backdrop-filter: blur(4px);
+  position:sticky; top:0; z-index:60; backdrop-filter: blur(4px);
   border-bottom:1px solid rgba(0,0,0,0.04);
 }
 .topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  height:72px;
-  max-width:var(--max-width);
-  margin:0 auto;
-  padding:0 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:72px; max-width:var(--max-width); margin:0 auto; padding:0 20px;
 }
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.brand img{
-  height:48px;
-  width:48px;
-  object-fit:contain;
-}
-.brand h1{
-  font-family:"Playfair Display";
-  margin:0;
-  font-size:20px;
-  letter-spacing:1px;
-}
-nav{
-  display:flex;
-  gap:16px;
-  align-items:center;
-}
-nav a{
-  padding:6px 8px;
-  border-radius:6px;
-  font-weight:600;
-  color:var(--dark);
-  text-decoration:none;
-}
-nav a.primary{
-  background:var(--accent);
-  color:#fff;
-  padding:8px 12px;
-  border-radius:20px;
-  font-weight:700;
-}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand img{height:48px;width:48px;object-fit:contain;}
+.brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px;}
+nav{display:flex; gap:16px; align-items:center;}
+nav a{padding:6px 8px; border-radius:6px; font-weight:600; color:var(--dark); text-decoration:none;}
+nav a.primary{background:var(--accent); color:#fff; padding:8px 12px; border-radius:20px; font-weight:700;}
 
 /* Controls */
-.container{
-  max-width:var(--max-width);
-  margin:0 auto;
-  padding:20px;
-}
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:16px;
-}
-.controls-left{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-.search{
-  padding:10px 14px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);
-  min-width:260px;
-  background:#fff;
-  box-shadow:0 6px 20px rgba(16,16,16,0.02);
-}
-.filters{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-select.filter, select.sort{
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);
-  background:#fff;
-  min-width:160px;
-}
+.container{max-width:var(--max-width); margin:20px auto; padding:0 20px;}
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:16px;}
+.controls-left{display:flex; gap:12px; align-items:center;}
+.search{padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.06); min-width:260px; background:#fff; box-shadow:0 6px 20px rgba(16,16,16,0.02);}
+.filters{display:flex; gap:10px; align-items:center;}
+select.filter, select.sort{padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.06); background:#fff; min-width:160px;}
 
 /* Product grid */
-.products-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-}
-.product-card{
-  background:var(--card);
-  border-radius:var(--radius);
-  overflow:hidden;
-  box-shadow:0 12px 30px rgba(12,12,12,0.04);
-  display:flex;
-  flex-direction:column;
-  transition:transform .22s, box-shadow .22s;
-}
-.product-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 22px 60px rgba(12,12,12,0.08);
-}
-.product-thumb{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  display:block;
-}
-.meta{
-  padding:14px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  flex:1;
-}
-.meta h5{
-  margin:0;
-  font-size:16px;
-}
-.meta p{
-  margin:0;
-  color:var(--muted);
-  font-size:14px;
-}
-.card-actions{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  border-top:1px solid #f4f4f4;
-  background:linear-gradient(180deg,#fff,#fbfbfb);
-}
-.btn{
-  padding:10px 14px;
-  border-radius:10px;
-  border:0;
-  font-weight:700;
-  cursor:pointer;
-}
-.btn.add{
-  background:var(--accent);
-  color:#fff;
-}
-.btn.visit{
-  background:transparent;
-  border:1px solid rgba(0,0,0,0.06);
-}
+.products-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;}
+.product-card{background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow:0 12px 30px rgba(12,12,12,0.04); display:flex; flex-direction:column; transition:transform .22s, box-shadow .22s;}
+.product-card:hover{transform:translateY(-6px); box-shadow:0 22px 60px rgba(12,12,12,0.08);}
+.product-thumb{width:100%; height:220px; object-fit:cover; display:block; cursor:pointer;}
+.meta{padding:14px; display:flex; flex-direction:column; gap:6px; flex:1;}
+.meta h5{margin:0; font-size:16px;}
+.meta p{margin:0; color:var(--muted); font-size:14px;}
+.card-actions{display:flex; gap:8px; padding:12px; border-top:1px solid #f4f4f4; background:linear-gradient(180deg,#fff,#fbfbfb);}
+.btn{padding:10px 14px; border-radius:10px; border:0; font-weight:700; cursor:pointer; flex:1;}
+.btn.add{background:var(--accent); color:#fff;}
+.btn.view{background:#fff; border:1px solid rgba(0,0,0,0.06);}
 
 /* Empty state */
-.empty{
-  padding:36px;
-  text-align:center;
-  color:var(--muted);
-}
+.empty{padding:36px; text-align:center; color:var(--muted); font-size:16px;}
 
 /* Responsive */
-@media (max-width:900px){
-  .controls{flex-direction:column;align-items:flex-start;}
+@media(max-width:900px){
+  .controls{flex-direction:column; align-items:flex-start;}
   .search{min-width:100%;}
   .filters{flex-wrap:wrap;}
+  .products-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
 }
 </style>
 </head>
@@ -214,18 +87,16 @@ select.filter, select.sort{
         <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
       </div>
     </div>
-
     <nav aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="shop.html" class="primary">Shop</a>
-      <a href="basketone.html" id="basketLink" class="primary">Basket <span id="basketCount" class="badge">0</span></a>
+      <a href="basketone.html" id="basketLink" class="primary">Basket <span id="basketCount">0</span></a>
     </nav>
   </div>
 </header>
 
 <main class="container">
 
-  <!-- Controls -->
   <div class="controls" role="region" aria-label="Shop controls">
     <div class="controls-left">
       <input id="searchInput" class="search" placeholder="Search products by name, category...">
@@ -243,37 +114,37 @@ select.filter, select.sort{
     </div>
   </div>
 
-  <!-- Products grid -->
   <div id="productsGrid" class="products-grid"></div>
+
 </main>
 
 <script>
-const products = [
-  {id:1,name:"Symmetry Fixing Serum",price:1800,category:"Skincare",subcategory:"Serum",image:"serum.jpg"},
-  {id:2,name:"Moisturizer Elixir",price:1900,category:"Skincare",subcategory:"Moisturizer",image:"moisturizer.jpg"},
-  {id:3,name:"Muscle Toning Serum",price:2000,category:"Skincare",subcategory:"Serum",image:"muscle.jpg"},
-  {id:4,name:"Mulberry Silk Skin Serum",price:2200,category:"Skincare",subcategory:"Serum",image:"mulberry.jpg"},
+// Products data
+const products=[
+  {id:1,name:"Symmetry Fixing Serum",price:1800,category:"Skincare",subcategory:"Serum",image:"serum.jpg",page:"product1.html"},
+  {id:2,name:"Moisturizer Elixir",price:1900,category:"Skincare",subcategory:"Moisturizer",image:"moisturizer.jpg",page:"product2.html"},
+  {id:3,name:"Muscle Toning Serum",price:2000,category:"Skincare",subcategory:"Serum",image:"muscle.jpg",page:"product3.html"},
+  {id:4,name:"Mulberry Silk Skin Serum",price:2200,category:"Skincare",subcategory:"Serum",image:"mulberry.jpg",page:"product4.html"},
 ];
 
-function saveBasket(basket){ localStorage.setItem('basket',JSON.stringify(basket)); updateBasketCountUI(); }
-function getBasket(){ return JSON.parse(localStorage.getItem('basket'))||[]; }
-function updateBasketCountUI(){ document.getElementById('basketCount').textContent = getBasket().reduce((s,i)=>s+Number(i.quantity||1),0); }
-
+// Basket
+function getBasket(){return JSON.parse(localStorage.getItem('basket'))||[];}
+function saveBasket(basket){localStorage.setItem('basket',JSON.stringify(basket)); updateBasketCount();}
+function updateBasketCount(){document.getElementById('basketCount').textContent=getBasket().reduce((s,i)=>s+Number(i.quantity||1),0);}
 function addToBasket(id){
-  const basket = getBasket();
-  const product = products.find(p=>p.id===id);
-  const index = basket.findIndex(i=>i.id===id);
-  if(index>-1){ basket[index].quantity+=1; }
-  else{ basket.push({...product, quantity:1}); }
+  const basket=getBasket(); const product=products.find(p=>p.id===id);
+  const index=basket.findIndex(i=>i.id===id);
+  if(index>-1){basket[index].quantity+=1;}else{basket.push({...product,quantity:1});}
   saveBasket(basket);
 }
 
+// Render products
 function renderProducts(list){
-  const container = document.getElementById('productsGrid');
-  if(!list.length){ container.innerHTML='<div class="empty">No products found.</div>'; return; }
-  container.innerHTML = list.map(p=>`
+  const container=document.getElementById('productsGrid');
+  if(!list.length){container.innerHTML='<div class="empty">No products found.</div>'; return;}
+  container.innerHTML=list.map(p=>`
     <div class="product-card">
-      <img class="product-thumb" src="${p.image}" alt="${p.name}">
+      <img class="product-thumb" src="${p.image}" alt="${p.name}" onclick="window.location='${p.page}'">
       <div class="meta">
         <h5>${p.name}</h5>
         <p>₹${p.price}</p>
@@ -281,40 +152,40 @@ function renderProducts(list){
       </div>
       <div class="card-actions">
         <button class="btn add" onclick="addToBasket(${p.id})">Add to Basket</button>
+        <button class="btn view" onclick="window.location='${p.page}'">View</button>
       </div>
     </div>
   `).join('');
 }
 
+// Search
 document.getElementById('searchInput').addEventListener('input',e=>{
-  const query = e.target.value.trim().toLowerCase();
-  const filtered = products.filter(p=>p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+  const query=e.target.value.toLowerCase().trim();
+  const filtered=products.filter(p=>p.name.toLowerCase().includes(query)||p.category.toLowerCase().includes(query));
   renderProducts(filtered);
 });
 
-document.getElementById('categoryFilter').addEventListener('change',e=>{
-  const val = e.target.value;
-  const filtered = val?products.filter(p=>p.category===val):products;
-  renderProducts(filtered);
+// Category filter
+const catSelect=document.getElementById('categoryFilter');
+[...new Set(products.map(p=>p.category))].forEach(c=>{const opt=document.createElement('option'); opt.value=c; opt.textContent=c; catSelect.appendChild(opt);});
+catSelect.addEventListener('change',e=>{
+  const val=e.target.value;
+  renderProducts(val?products.filter(p=>p.category===val):products);
 });
 
+// Sort
 document.getElementById('sortSelect').addEventListener('change',e=>{
-  const val = e.target.value;
-  let sorted = [...products];
+  let sorted=[...products]; const val=e.target.value;
   if(val==='priceHigh') sorted.sort((a,b)=>b.price-a.price);
-  else if(val==='priceLow') sorted.sort((a,b)=>a.price-b.price);
+  else if(val==='priceLow') sorted.sort((a,b)=>a.price-a.price);
   else if(val==='az') sorted.sort((a,b)=>a.name.localeCompare(b.name));
   renderProducts(sorted);
 });
 
-// Populate category filter
-const categories = [...new Set(products.map(p=>p.category))];
-const select = document.getElementById('categoryFilter');
-categories.forEach(c=>{ const opt=document.createElement('option'); opt.value=c; opt.textContent=c; select.appendChild(opt); });
-
+// Init
 renderProducts(products);
-updateBasketCountUI();
+updateBasketCount();
 </script>
 
 </body>
-</html>
+          </html>
