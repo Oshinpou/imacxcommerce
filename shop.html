@@ -1,341 +1,260 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Imacx — Shop</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Imacx Shop</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #111;
+    }
 
-<!-- Fonts (match Imacx) -->
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    header {
+      background: #000;
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-<!-- Fuse for search -->
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
 
-<style>
-  :root{
-    --accent:#9ed9bb;
-    --dark:#0f1414;
-    --muted:#6b6b6b;
-    --card:#ffffff;
-    --bg:#faf9f7;
-    --max-width:1200px;
-  }
-  *{box-sizing:border-box}
-  body{
-    font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    margin:0; color:var(--dark); background:var(--bg);
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:var(--accent); text-decoration:none}
+    header nav {
+      display: flex;
+      gap: 15px;
+    }
 
-  /* Container */
-  .container{max-width:var(--max-width); margin:0 auto; padding:20px}
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-  /* Header (styled like Imacx homepage) */
-  header{
-    background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
-    position:sticky; top:0; z-index:60; backdrop-filter: blur(4px);
-    border-bottom:1px solid rgba(0,0,0,0.04);
-  }
-  .topbar{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--max-width);margin:0 auto;padding:0 20px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:48px;width:48px;object-fit:contain}
-  .brand h1{font-family:"Playfair Display"; margin:0; font-size:20px; letter-spacing:1px}
-  nav{display:flex;gap:16px;align-items:center}
-  nav a{padding:6px 8px;border-radius:6px;font-weight:600;color:var(--dark)}
-  nav a.primary{background:var(--accent); color:#fff; padding:8px 12px;border-radius:20px;font-weight:700}
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px;
+      justify-content: center;
+      background: #f4f4f4;
+    }
 
-  /* Controls (search/filter/sort) */
-  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:18px 20px;background:transparent;justify-content:space-between}
-  .controls-left{display:flex;gap:12px;align-items:center}
-  .search {
-    padding:10px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);min-width:260px;background:#fff;
-    box-shadow:0 6px 20px rgba(16,16,16,0.02);
-  }
-  .filters{display:flex;gap:10px;align-items:center}
-  select.filter, select.sort {
-    padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:#fff; min-width:160px;
-  }
-  .basket-link{
-    display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;
-    box-shadow:0 8px 20px rgba(16,16,16,0.06);
-  }
-  .badge{background:#fff;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:700;font-size:13px}
+    select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-  /* Products grid (keep Imacx card style) */
-  .products-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:18px;
-    padding:20px;
-  }
-  .product-card{
-    background:var(--card);
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 12px 30px rgba(12,12,12,0.04);
-    display:flex;flex-direction:column;transition:transform .22s, box-shadow .22s;
-  }
-  .product-card:hover{transform:translateY(-6px); box-shadow:0 22px 60px rgba(12,12,12,0.08)}
-  .product-thumb{width:100%;height:180px;object-fit:cover;display:block}
-  .meta{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
-  .meta h5{margin:0;font-size:16px}
-  .meta p{margin:0;color:var(--muted);font-size:14px}
-  .card-actions{display:flex;gap:8px;padding:12px;border-top:1px solid #f4f4f4;background:linear-gradient(180deg,#fff,#fbfbfb)}
-  .btn{padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
-  .btn.add{background:var(--accent);color:#fff}
-  .btn.visit{background:transparent;border:1px solid rgba(0,0,0,0.06)}
-  .like{margin-left:auto;align-self:center;font-size:18px;color:var(--muted);cursor:pointer}
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
 
-  /* Empty state */
-  .empty{padding:36px;text-align:center;color:var(--muted)}
+    .product-card {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 15px;
+    }
 
-  /* Responsive tweaks */
-  @media (max-width:900px){
-    .topbar{padding:0 14px}
-    .search{min-width:160px}
-    .filters{flex:1;justify-content:flex-end}
-  }
-</style>
+    .product-card img {
+      max-width: 100%;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .product-card h5 {
+      font-size: 16px;
+      margin: 10px 0 5px;
+    }
+
+    .product-card p {
+      font-size: 14px;
+      margin: 0 0 10px;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+      color: #fff;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 18px;
+      }
+      .product-card img {
+        height: 150px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="topbar container">
-    <div class="brand">
-      <img src="icon.png" alt="Imacx logo">
-      <div>
-        <h1>Imacx</h1>
-        <div style="font-size:12px;color:var(--muted)">creamer dreamer</div>
-      </div>
-    </div>
-
-    <nav aria-label="Main navigation">
+  <header>
+    <h1>IMACX SHOP</h1>
+    <nav>
       <a href="index.html">Home</a>
-      <a href="shop.html" class="primary">Shop</a>
-      <a href="basketone.html" id="basketLink" class="basket-link">Basket <span id="basketCount" class="badge">0</span></a>
+      <a href="basketone.html">Basket</a>
+      <a href="contact.html">Contact</a>
     </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container" style="padding-top:12px;">
+  <section class="controls">
+    <select id="filterCategory">
+      <option value="all">Filter by Category</option>
+      <option value="Cosmetics">Cosmetics</option>
+      <option value="Furniture">Furniture</option>
+      <option value="Chocolates">Chocolates</option>
+      <option value="Jewelry">Jewelry</option>
+    </select>
 
-  <!-- controls -->
-  <div class="controls" role="region" aria-label="Shop controls">
-    <div class="controls-left">
-      <input id="searchInput" class="search" placeholder="Search products by name, category...">
-      <div class="filters" aria-hidden="false">
-        <select id="categoryFilter" class="filter" aria-label="Filter category">
-          <option value="">All categories</option>
-        </select>
-        <select id="sortSelect" class="sort" aria-label="Sort products">
-          <option value="">Sort —</option>
-          <option value="priceHigh">Price: High → Low</option>
-          <option value="priceLow">Price: Low → High</option>
-          <option value="az">A → Z</option>
-        </select>
-      </div>
-    </div>
+    <select id="sortPrice">
+      <option value="none">Sort by Price</option>
+      <option value="low">Lowest First</option>
+      <option value="high">Highest First</option>
+    </select>
 
-    <div>
-      <a href="basketone.html" class="basket-link">View Basket <span id="basketCountTop" class="badge">0</span></a>
-    </div>
-  </div>
-
-  <!-- products -->
-  <section id="productsSection" aria-label="Products">
-    <div id="productsGrid" class="products-grid" role="list"></div>
-    <div id="noResults" class="empty" style="display:none">No products found.</div>
+    <select id="sortName">
+      <option value="none">Sort by Name</option>
+      <option value="az">A - Z</option>
+      <option value="za">Z - A</option>
+    </select>
   </section>
-</main>
 
-<script>
-/* ============================
-   Soft-coded product data (20)
-   ============================ */
-const PRODUCTS = [
-  { id:'p1', name: 'Imacx Iconic Chair', slug:'imacx-iconic-chair', category:'Furniture', subcategory:'Chair', image:'symbolt2.png', price:12000, description:'Luxury handcrafted chair.' },
-  { id:'p2', name: 'Silk Comfort Pillow', slug:'silk-comfort-pillow', category:'Bedding', subcategory:'Pillow', image:'symbolt3.png', price:5000, description:'Soft silk pillow.' },
-  { id:'p3', name: 'Fur Bean Bed', slug:'fur-bean-bed', category:'Furniture', subcategory:'Bean Bag', image:'symbolt5.png', price:15000, description:'Sumptuous fur bean bed.' },
-  { id:'p4', name: 'Luxe Wall Jewellery', slug:'luxe-wall-jewellery', category:'Decor', subcategory:'Wall', image:'symbolt7.png', price:5400, description:'Artistic wall jewellery.' },
-  { id:'p5', name: 'Blue Chocolate Box', slug:'blue-chocolate-box', category:'Gifts', subcategory:'Confection', image:'symbolt9.png', price:2000, description:'Signature confections.' },
-  { id:'p6', name: 'Signature Jewelry', slug:'signature-jewelry', category:'Accessories', subcategory:'Jewelry', image:'symbolt11.png', price:1499, description:'Handmade fashion jewelry.' },
-  { id:'p7', name: 'Wooden Coffee Table', slug:'wooden-coffee-table', category:'Tables', subcategory:'Coffee Table', image:'symbolt13.png', price:7999, description:'Solid wood table.' },
-  { id:'p8', name: 'Minimal Shelf', slug:'minimal-shelf', category:'Storage', subcategory:'Shelf', image:'symbolt14.png', price:2499, description:'Sleek minimal shelf.' },
-  { id:'p9', name: 'Pressed Glass Lamp', slug:'pressed-glass-lamp', category:'Lighting', subcategory:'Lamp', image:'symbolt16.png', price:1999, description:'Ambient pressed glass lamp.' },
-  { id:'p10', name: 'Handwoven Rug', slug:'handwoven-rug', category:'Decor', subcategory:'Rug', image:'symbolt18.png', price:4999, description:'Handwoven artisanal rug.' },
-  { id:'p11', name: 'Ceramic Vase', slug:'ceramic-vase', category:'Decor', subcategory:'Vase', image:'symbolt20.png', price:799, description:'Elegant ceramic vase.' },
-  { id:'p12', name: 'Wall Mirror', slug:'wall-mirror', category:'Decor', subcategory:'Mirror', image:'symbolt22.png', price:3499, description:'Statement wall mirror.' },
-  { id:'p13', name: 'Plush Throw', slug:'plush-throw', category:'Textiles', subcategory:'Throw', image:'symbolt24.png', price:999, description:'Cozy plush throw.' },
-  { id:'p14', name: 'Accent Stool', slug:'accent-stool', category:'Seating', subcategory:'Stool', image:'symbolt27.png', price:2499, description:'Handcrafted stool.' },
-  { id:'p15', name: 'Dining Set', slug:'dining-set', category:'Dining', subcategory:'Set', image:'symbolt29.png', price:19999, description:'Modern dining set.' },
-  { id:'p16', name: 'Outdoor Lantern', slug:'outdoor-lantern', category:'Outdoor', subcategory:'Lighting', image:'symbolt31.png', price:1299, description:'Weatherproof lantern.' },
-  { id:'p17', name: 'Designer Clock', slug:'designer-clock', category:'Decor', subcategory:'Clock', image:'symbolt33.png', price:899, description:'Minimal designer clock.' },
-  { id:'p18', name: 'Bath Set', slug:'bath-set', category:'Bathroom', subcategory:'Set', image:'symbolt35.png', price:1299, description:'Luxury bath accessories.' },
-  { id:'p19', name: 'Plant Stand', slug:'plant-stand', category:'Decor', subcategory:'Planter', image:'symbolt37.png', price:999, description:'Stylish plant stand.' },
-  { id:'p20', name: 'Art Poster', slug:'art-poster', category:'Wall Art', subcategory:'Poster', image:'symbolt39.png', price:499, description:'Limited edition art poster.' }
-];
+  <section class="products-grid"></section>
 
-/* ==============
-   Utilities
-   ============== */
-const getBasket = () => JSON.parse(localStorage.getItem('basket')) || [];
-const saveBasket = (b) => localStorage.setItem('basket', JSON.stringify(b));
-function updateBasketCountUI(){
-  const c = getBasket().reduce((s,i)=> s + (i.quantity||0), 0);
-  document.getElementById('basketCount').textContent = c;
-  document.getElementById('basketCountTop').textContent = c;
-}
+  <footer>
+    <p>© 2025 Imacx. All Rights Reserved.</p>
+  </footer>
 
-/* ==============
-   Render products
-   ============== */
-const grid = document.getElementById('productsGrid');
-const noResults = document.getElementById('noResults');
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Imacx Iconic Face Cream",
+        category: "Cosmetics",
+        price: 2200,
+        image: "images/product1.jpg",
+        page: "product1.html"
+      },
+      {
+        id: 2,
+        name: "Imacx Blue Chocolate",
+        category: "Chocolates",
+        price: 1800,
+        image: "images/product2.jpg",
+        page: "product2.html"
+      },
+      {
+        id: 3,
+        name: "Imacx Giant Pillow",
+        category: "Furniture",
+        price: 6500,
+        image: "images/product3.jpg",
+        page: "product3.html"
+      },
+      {
+        id: 4,
+        name: "Imacx Fashion Jewelry",
+        category: "Jewelry",
+        price: 3200,
+        image: "images/product4.jpg",
+        page: "product4.html"
+      }
+    ];
 
-function createProductCard(p){
-  // wrapper
-  const card = document.createElement('article');
-  card.className = 'product-card';
-  card.setAttribute('role','listitem');
+    function renderProducts(list) {
+      const grid = document.querySelector(".products-grid");
+      if (!list.length) {
+        grid.innerHTML = `<div>No products found</div>`;
+        return;
+      }
+      grid.innerHTML = list.map(p => `
+        <div class="product-card">
+          <img src="${p.image}" alt="${p.name}">
+          <h5>${p.name}</h5>
+          <p>₹${p.price} — ${p.category}</p>
+          <div class="card-actions">
+            <button class="btn" onclick="addToBasket(${p.id})">Add</button>
+            <a href="${p.page}" class="btn">Visit</a>
+          </div>
+        </div>
+      `).join("");
+    }
 
-  // top link (image + text)
-  const topLink = document.createElement('a');
-  topLink.href = p.slug + '.html';
-  topLink.style.textDecoration = 'none';
-  topLink.style.color = 'inherit';
+    function addToBasket(id) {
+      const product = products.find(p => p.id === id);
+      let basket = JSON.parse(localStorage.getItem("basket")) || [];
+      basket.push({ ...product, quantity: 1 });
+      localStorage.setItem("basket", JSON.stringify(basket));
+      alert(product.name + " added to basket!");
+    }
 
-  const img = document.createElement('img');
-  img.src = p.image;
-  img.alt = p.name;
-  img.className = 'product-thumb';
-  topLink.appendChild(img);
+    function applyFilters() {
+      let list = [...products];
+      const category = document.getElementById("filterCategory").value;
+      const price = document.getElementById("sortPrice").value;
+      const name = document.getElementById("sortName").value;
 
-  const meta = document.createElement('div');
-  meta.className = 'meta';
-  const h = document.createElement('h5'); h.textContent = p.name;
-  const desc = document.createElement('p'); desc.textContent = p.description;
-  const price = document.createElement('p'); price.style.fontWeight='700'; price.textContent = '₹' + p.price;
+      if (category !== "all") {
+        list = list.filter(p => p.category === category);
+      }
 
-  meta.appendChild(h);
-  meta.appendChild(desc);
-  meta.appendChild(price);
+      if (price === "low") list.sort((a,b) => a.price - b.price);
+      if (price === "high") list.sort((a,b) => b.price - a.price);
 
-  topLink.appendChild(meta);
-  card.appendChild(topLink);
+      if (name === "az") list.sort((a,b) => a.name.localeCompare(b.name));
+      if (name === "za") list.sort((a,b) => b.name.localeCompare(a.name));
 
-  // actions
-  const actions = document.createElement('div'); actions.className = 'card-actions';
+      renderProducts(list);
+    }
 
-  const visit = document.createElement('a');
-  visit.href = p.slug + '.html';
-  visit.className = 'btn visit';
-  visit.textContent = 'Visit';
+    document.getElementById("filterCategory").addEventListener("change", applyFilters);
+    document.getElementById("sortPrice").addEventListener("change", applyFilters);
+    document.getElementById("sortName").addEventListener("change", applyFilters);
 
-  const add = document.createElement('button');
-  add.className = 'btn add';
-  add.textContent = 'Add to basket';
-
-  const like = document.createElement('div');
-  like.className = 'like';
-  like.textContent = '♡';
-  like.title = 'Like';
-
-  // add behaviour
-  add.addEventListener('click', (ev)=>{
-    ev.preventDefault(); ev.stopPropagation();
-    addToBasket({ id:p.id, name:p.name, image:p.image, price:p.price, quantity:1, category:p.category, subcategory:p.subcategory, variant:'' });
-    // quick feedback
-    add.textContent = 'Added ✓';
-    setTimeout(()=> add.textContent = 'Add to basket',1000);
-  });
-
-  like.addEventListener('click', (ev)=>{ ev.preventDefault(); ev.stopPropagation(); like.classList.toggle('liked'); like.textContent = like.classList.contains('liked') ? '♥' : '♡'; });
-
-  actions.appendChild(visit);
-  actions.appendChild(add);
-  actions.appendChild(like);
-  card.appendChild(actions);
-
-  return card;
-}
-
-function renderProducts(list){
-  grid.innerHTML = '';
-  if(!list || list.length === 0){
-    noResults.style.display = 'block';
-    return;
-  }
-  noResults.style.display = 'none';
-  const fragment = document.createDocumentFragment();
-  list.forEach(p => fragment.appendChild(createProductCard(p)));
-  grid.appendChild(fragment);
-}
-
-/* ==============
-   Add to basket
-   ============== */
-function addToBasket(item){
-  const basket = getBasket();
-  const existing = basket.find(i => i.id === item.id && i.variant === (item.variant||''));
-  if(existing){ existing.quantity = (existing.quantity || 0) + item.quantity; }
-  else { basket.push({...item}); }
-  saveBasket(basket);
-  updateBasketCountUI();
-}
-
-/* ==============
-   Search / Filter / Sort
-   ============== */
-let fuse = new Fuse(PRODUCTS, { keys: ['name','category','subcategory'], threshold: 0.3 });
-
-const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
-const sortSelect = document.getElementById('sortSelect');
-
-// populate categories
-(function populateCategories(){
-  const cats = [...new Set(PRODUCTS.map(p=>p.category))].sort();
-  cats.forEach(c => {
-    const opt = document.createElement('option'); opt.value = c; opt.textContent = c;
-    categoryFilter.appendChild(opt);
-  });
-})();
-
-function applyAll(){
-  let list = [...PRODUCTS];
-
-  // search
-  const q = searchInput.value.trim();
-  if(q){
-    const res = fuse.search(q).map(r=>r.item);
-    list = res;
-  }
-
-  // filter category
-  const cat = categoryFilter.value;
-  if(cat) list = list.filter(p => p.category === cat);
-
-  // sort
-  const sort = sortSelect.value;
-  if(sort === 'priceHigh') list.sort((a,b)=>b.price - a.price);
-  if(sort === 'priceLow') list.sort((a,b)=>a.price - b.price);
-  if(sort === 'az') list.sort((a,b)=> a.name.localeCompare(b.name));
-
-  renderProducts(list);
-}
-
-// events
-searchInput.addEventListener('input', ()=>{ applyAll(); });
-categoryFilter.addEventListener('change', applyAll);
-sortSelect.addEventListener('change', applyAll);
-
-/* init */
-document.addEventListener('DOMContentLoaded', ()=>{
-  renderProducts(PRODUCTS);
-  updateBasketCountUI();
-});
-</script>
+    renderProducts(products);
+  </script>
 </body>
 </html>
